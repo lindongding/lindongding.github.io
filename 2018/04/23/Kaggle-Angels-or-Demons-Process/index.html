@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Competition," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="最近在处理一个数据集，这里记录下我对这些数据的处理过程。数据集不是公开的，所以这里不贴出地址。PS：本文章只是笔记，处理过程可能不适用于别的数据集。代码地址在这">
+<meta name="keywords" content="Competition">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kaggle:Angels or Demons Process">
+<meta property="og:url" content="http://lindongding.com/2018/04/23/Kaggle-Angels-or-Demons-Process/index.html">
+<meta property="og:site_name" content="Samuel&#39;s Blog">
+<meta property="og:description" content="最近在处理一个数据集，这里记录下我对这些数据的处理过程。数据集不是公开的，所以这里不贴出地址。PS：本文章只是笔记，处理过程可能不适用于别的数据集。代码地址在这">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://github.com/lindongding/Blog-Picture/blob/master/损失平面等高线.gif?raw=true">
+<meta property="og:image" content="https://github.com/lindongding/Blog-Picture/blob/master/在鞍点处的比较.gif?raw=true">
+<meta property="og:updated_time" content="2018-04-23T15:12:04.825Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kaggle:Angels or Demons Process">
+<meta name="twitter:description" content="最近在处理一个数据集，这里记录下我对这些数据的处理过程。数据集不是公开的，所以这里不贴出地址。PS：本文章只是笔记，处理过程可能不适用于别的数据集。代码地址在这">
+<meta name="twitter:image" content="https://github.com/lindongding/Blog-Picture/blob/master/损失平面等高线.gif?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://lindongding.com/2018/04/23/Kaggle-Angels-or-Demons-Process/"/>
+
+
+
+
+
+  <title>Kaggle:Angels or Demons Process | Samuel's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Samuel's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">lindongding's Personal Website</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/resume/" rel="section">
+            
+            Resume
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://lindongding.com/2018/04/23/Kaggle-Angels-or-Demons-Process/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LinDongDing">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Samuel's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Kaggle:Angels or Demons Process</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-23T21:17:36+08:00">
+                2018-04-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近在处理一个数据集，这里记录下我对这些数据的处理过程。数据集不是公开的，所以这里不贴出地址。PS：本文章只是笔记，处理过程可能不适用于别的数据集。<a href="https://github.com/lindongding/AngelOrDemon" target="_blank" rel="noopener">代码地址在这</a><br><a id="more"></a></p>
+<h4 id="Part-I：规范化数据"><a href="#Part-I：规范化数据" class="headerlink" title="Part I：规范化数据"></a>Part I：规范化数据</h4><p>文件有两部分，一个是train.csv，一个是test.csv，经过<code>open()</code>之后发现里面有很多的非数值化部分，因此决定先转换成数值文件后再喂给分类器。（因为open是python的内置函数，对于pandas其实我不是很熟悉，还是需要一边看文档一边找函数，所以我一般先使用open来打开文件，如果可以直接处理就直接处理）这里强烈推荐使用pandas作为数据预处理的工具，它有内置很多很棒的函数，比如describe, info, fillna, dropna等，print的时候也不会输出全部的数据，这些可以让你很直观的看到数据的总体情况。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pandas_train = pd.read_csv(<span class="string">"./DataSet/train.csv"</span>, header=<span class="keyword">None</span>)</span><br><span class="line">pandas_test  = pd.read_csv(<span class="string">"./DataSet/test.csv"</span>, header=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure></p>
+<p>因为文件中第一行不是标题，所以用header=None来跳过。我们的数据很多都是空的，整列空的不包含信息可以直接去掉，但是别的不行，我们需要结合test的部分来看需要怎么处理，因此，我把train和test的data部分结合在一起，清洗数据，label的部分单独拿出来。这里使用<code>pandas.tocsv()</code>来随时随地保存文件。保存之后，我们有了4份文件：data_all, train_data,train_label,testdata。之后直接用<code>pandas.read_csv()</code>就可以了。</p>
+<h4 id="Part-II：清洗数据与特征工程"><a href="#Part-II：清洗数据与特征工程" class="headerlink" title="Part II：清洗数据与特征工程"></a>Part II：清洗数据与特征工程</h4><p>清洗数据目的在于：填写缺失的值、光滑噪声数据、识别或者删除离群的点，先解决这些脏数据，否者会影响挖掘结果的可信度。</p>
+<ol>
+<li>去掉整一列都是缺失值Nan的，pandas里可以用<code>pandas.dropna(axis=1, how=&#39;all&#39;)</code>, axis=0的话就去掉行全部为Nan的，1的话就去掉列。这里其实还可以设定thresh的值，表示多少缺失值以上就去除。这里我们会看到数据量有缺失90%以上的列，可以去掉。</li>
+<li>然后用先对数值列的空值用<code>pandas.fillna()</code>函数填补，为了方便，我这里用的是means值来填充。当然，也可以用predict的方式，比如将缺失值视为label，其他变量视为已知数据，然后用随机森林，神经网络等方法去预测缺失值，但是可能会造成过拟合问题。注意<code>pandas.fillna(pandas. means())</code>是根据每一列的均值去填充的</li>
+<li><p>至此，应该已经填充完了所有数值列，接下来我们需要先找到非数值列，然后用众数（因为对于string，没有大小之分，只有数量之分）或者miss值，我们先找到列，观察它们的统计情况。对于比例在0.5%之下的，我们直接用众数填充，因为我觉得这可能是一个有用的信息，大部分的已经收集到了，用miss值来代替的话并不是很好；而对于比例在1%以上的，直接用miss值来代替，因为这时候用里面任何一个值来代替都是一种不可信的信息，甚至会带来噪声，因此直接用miss来代替。PS：这里的百分比不是固定的，可以自己设定。这里我们的缺失值有两种，0.19%和31%，我们对号入座。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> data_all.columns:</span><br><span class="line">    d=len(data_all)-data_all[i].count()</span><br><span class="line">    r=(d/len(data_all))*<span class="number">100</span></span><br><span class="line">    rate=<span class="string">'%.2f%%'</span> % r</span><br><span class="line">    <span class="keyword">if</span> d != <span class="number">0</span>:</span><br><span class="line">        print(<span class="string">'字段名为：'</span>,str(i).ljust(<span class="number">10</span>),<span class="string">'缺失值数量:'</span>,str(d).ljust(<span class="number">4</span>),<span class="string">'缺失数量占比：'</span>,rate)</span><br><span class="line">        <span class="keyword">if</span> r &lt; <span class="number">0.5</span>:</span><br><span class="line">            word = data_all.iloc[:, i].mode().loc[<span class="number">0</span>]</span><br><span class="line">            data_all.iloc[:, i].fillna(word, inplace=<span class="keyword">True</span>)</span><br><span class="line">        <span class="keyword">if</span> r &gt; <span class="number">1</span>:</span><br><span class="line">            data_all.iloc[:, i].fillna(<span class="string">'missing'</span>, inplace=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>现在，我们已经有了一个full-fill data，但是还有很多非数值部分，我们统计一下，在非数值字段里有多少个值，这意味着我们后面建one-hot dataframe 的时候会不会导致表过大，然后我们发现里面有一个value_counts值特别大，我们”人工“智能一下，是“时间”，格式是“2017-07-03-17.37.41.000000“，接下来我们将这个值转换成数值形式。使用以下式子<code>pd.to_datetime(time, format=&#39;%Y-%m-%d-%H.%M.%S.%f&#39;)</code>。接下来，我们希望把它转成分钟甚至秒的形式，尽可能的保留信息。然后，我们通过每k秒为一个类的形式，给它们编号，因为我们知道，可能是某一段时间里，数据生成的比较好，所以这里应该将其视为类，而不是数值。这里我们添加了额外的信息“一天里，一堆数据生产的状况会比较好”。得到了天数之后，我们把它dummies一下，添加到最后。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">temp = pd.get_dummies(data_all.iloc[:, <span class="number">237</span>])</span><br><span class="line">data_all.drop(<span class="number">237</span>, <span class="number">1</span>, inplace=<span class="keyword">True</span>)</span><br><span class="line">data_all = pd.concat([data_all, temp], axis=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>接下来把其他非数值用跟上述类似的方法，转成one-hot矩阵。再拼接即可。</p>
+</li>
+</ol>
+<p><strong>经过上述处理，所有数据都成了数值，接下来我们做一些“额外”的操作。</strong><br><strong>归一化问题</strong>，我是直接把原始数据读进来而没有做任何修改，因此我想到归一化操作。数据归一化（标准化）是机器学习/数据挖掘的一项基础工作，是数据预处理的重要一步。样本各个特征往往具有不同的分布范围，通过归一化将各个维度的特征值映射到相同区间，使得各特征值具有相同量纲，处于同一数量级。为什么要归一化？<a href="https://www.jianshu.com/p/f9bde6a37d75" target="_blank" rel="noopener">参考地址在这里</a></p>
+<ol>
+<li>第一，归一化的需求主要看学习算法有没有伸缩不变性。有些机器学习算法在将样本各个维度特征值进行不均匀伸缩后（例如，对各维特征值乘以不同系数），训练得到的模型最优解与原来不等价，例如SVM，这样的算法我们说它不具有伸缩不变性。对于这一类算法，除非本来各维特征值的分布范围就比较接近，否则必须进行归一化。</li>
+<li>提高准确率，加快模型收敛速度。归一化后，寻优过程变得平滑，收敛速度得到提高。</li>
+<li>但是，各维分别做归一化会丢失各维方差这一信息，但各维之间的相关系数可以保留。因此，如果本来各维的量纲是相同的，最好不要做归一化，以尽可能多地保留信息。如果本来各维的量纲是不同的，就需要先对各维分别归一化。<br>归一化的工具有很多，这里使用的是sklearn的preprocessing包，两句话搞定。<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">min_max_scaler = preprocessing.MinMaxScaler()</span><br><span class="line">min_max_data = min_max_scaler.fit_transform(data_all.values)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>至此，数据清洗部分与特征工程已经基本做完了，尽可能的保留了全部的原始信息，接下来做分类器部分。</p>
+<h4 id="Part-III：分类器（模型构建）"><a href="#Part-III：分类器（模型构建）" class="headerlink" title="Part III：分类器（模型构建）"></a>Part III：分类器（模型构建）</h4><p>为了使得构建batch更方便，使用pytorch里面的dataloader函数来构建。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">train_data = pd.read_csv(<span class="string">'./DataSet/Last_Train.csv'</span>,header=<span class="keyword">None</span>)</span><br><span class="line">train_label = pd.read_csv(<span class="string">'./DataSet/Last_Train_Label.csv'</span>,header=<span class="keyword">None</span>)</span><br><span class="line">test_data = pd.read_csv(<span class="string">'./DataSet/Last_Test.csv'</span>,header=<span class="keyword">None</span>)</span><br><span class="line">d = torch.from_numpy(train_data.values)</span><br><span class="line">l = torch.from_numpy(train_label.values)</span><br><span class="line">t = torch.from_numpy(test_data.values)</span><br><span class="line">torch_dataset = Data.TensorDataset(data_tensor=d, target_tensor=l)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载生成dataloader</span></span><br><span class="line">loader = Data.DataLoader(</span><br><span class="line">    dataset=torch_dataset,  </span><br><span class="line">    batch_size=BATCH_SIZE, </span><br><span class="line">    shuffle=SHUFFLE,</span><br><span class="line">    num_workers=NUM_WORKERS,</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<p>然后构建网络架构，这里使用简单的两个隐藏层的网络。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyNet</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, n_feature, n_hidden, n_output)</span>:</span></span><br><span class="line">        super(MyNet, self).__init__()</span><br><span class="line">        self.hidden1 = nn.Linear(n_feature, n_hidden)</span><br><span class="line">        self.hidden2 = nn.Linear(n_hidden, n_hidden)</span><br><span class="line">        self.output  = nn.Linear(n_hidden, n_output)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        x = x.cuda() <span class="keyword">if</span> CUDA <span class="keyword">is</span> <span class="keyword">True</span> <span class="keyword">else</span> x</span><br><span class="line">        x = F.relu(self.hidden1(x))</span><br><span class="line">        x = F.relu(self.hidden2(x))</span><br><span class="line">        x = self.output(x)</span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line">net = MyNet(FEATURE, int(FEATURE/<span class="number">2</span>), LABEL_COUNT)</span><br><span class="line">net = net.cuda <span class="keyword">if</span> CUDA <span class="keyword">is</span> <span class="keyword">True</span> <span class="keyword">else</span> net</span><br></pre></td></tr></table></figure></p>
+<p>这里要提一下loss的选择，简单总结一下pytorch里内置的各种loss，<a href="https://blog.csdn.net/zhangxb35/article/details/72464152" target="_blank" rel="noopener">参考网址</a></p>
+<ol>
+<li>L1Loss：直接计算|x-y|</li>
+<li>MSELoss：square|x-y|</li>
+<li>BCELoss：二分类交叉熵，使用时需要在前面一层加上sigmod</li>
+<li>NLLLoss：多分类的负对数似然损失函数。在前面加上logSoftmax就是CrossEntropy了</li>
+<li>NLLLoss2d：多维度，一般用在图片上</li>
+<li>KLDivLoss：相对熵，算两个分布之间的距离</li>
+<li>SmoothL1Loss：L1Loss的变种，在不同值段不同计算方法</li>
+<li>SoftMarginLoss：多标签二分类问题</li>
+<li>MultiMarginLoss：多分类Hinge损失</li>
+<li>TripletMarginLoss：从训练数据集中随机选一个样本，该样本称为Anchor，然后再随机选取一个和Anchor (记为x_a)属于同一类的样本和不同类的样本，这两个样本对应的称为Positive (记为x_p)和Negative (记为x_n)，由此构成一个（Anchor，Positive，Negative）三元组。针对三元组中的每个元素（样本），训练一个参数共享或者不共享的网络，得到三个元素的特征表达。triplet loss的目的就是通过学习，让x_a和x_p特征表达之间的距离尽可能小，而x_a和x_n的特征表达之间的距离尽可能大，并且要让x_a与x_n之间的距离和x_a与x_p之间的距离之间有一个最小的间隔。</li>
+<li>CrossEntropyLoss：多分类交叉熵，前面不需要加Softmax</li>
+<li>MarginRankingLoss：评价相似度，参数margin表示两个vector至少在margin里<br>13 BCEWithLogitsLoss：BCELoss上加了sigmod，建议使用这个</li>
+<li>HingeEmbeddingLoss：判断两个分布的相似度</li>
+<li>MultiLabelMarginLoss：多分类多类别Hinge损失</li>
+<li>CosineEmbeddingLoss：余弦相似度损失</li>
+<li>MultiLabelSoftMarginLoss：多标签多分类问题</li>
+</ol>
+<p>PS：这里有个Pytorch的Loss function使用的注意事项：在Pytorch里，对维度的要求是很高的，不同的loss在使用的时候要注意看它的api，有的在<code>loss_func(output, target)</code>里output只需要是多个类的output，有的需要的是单个label。这里还要提一下optimizer的选择，以下是pytorch里内置的optimizer，简单介绍一下，要具体了解请自行Google。<a href="https://blog.csdn.net/u012759136/article/details/52302426" target="_blank" rel="noopener">参考地址在这里</a></p>
+<ol>
+<li>SGD：Stochastic Gradient descent，最普通但是最基本的方法，内置的SGD事实上是带momentum的。momentum可以理解为SGD山坡里的加速度，梯度提供了初速度与方向。设置 momentum &gt; 0 这个参数即可实现 Momentum 算法。</li>
+<li>Adagrad：可以避免手动调节学习率，是在SGD上的改进。</li>
+<li>Adadelta：用一阶的方法，近似模拟二阶牛顿法。AdaGrad缺点就是它计算时要在分母上计算梯度平方的和，由于所有的参数平法必为正数，这样就造成在训练的过程中，分母累积的和会越来越大。这样学习到后来的阶段，网络的更新能力会越来越弱，能学到的更多知识的能力也越来越弱，因为学习率会变得极其小。Adadelta不累加之前所有的梯度平方和，只累加固定大小的项。从多个数据集情况来看，AdaDelta在训练初期和中期，具有非常不错的加速效果，但是到训练后期，进入局部最小值雷区之后，AdaDelta就会反复在局部最小值附近抖动。这时候可以切换成SGD来训练。</li>
+<li>RMSprop：Root Mean Square Prop，在AdaGrad的基础上增加了一个衰减系数来控制历史信息的获取多少，是AdaGrad的改进版，可以视为Adadelta的一个特例。适合处理非平稳目标，对于RNN效果很好。</li>
+<li>Adam：Adaptive Moment Estimation，本质上是带有动量项的RMSprop，它利用梯度的一阶矩估计和二阶矩估计动态调整每个参数的学习率。Adam的优点主要在于经过偏置校正后，每一次迭代学习率都有个确定范围，使得参数比较平稳。优点：结合了Adagrad善于处理稀疏梯度和RMSprop善于处理非平稳目标的优点，对内存需求较小，为不同的参数计算不同的自适应学习率，也适用于大多非凸优化，适用于大数据集和高维空间。</li>
+<li>Adamax：Adamax是Adam的一种变体，此方法对学习率的上限提供了一个更简单的范围。</li>
+<li>SparseAdam：实现适用于稀疏张量的Adam算法的懒惰版本。在SparseAdam中，只有在渐变中出现的时刻才会更新，只有渐变的那些部分才会应用于参数。</li>
+<li>ASGD：Average SGD在SGD的基础上计算了权值的平均值，比SGD的训练速度更为缓慢。（好像没什么优势）</li>
+<li>LBFGS：Limited Broyden–Fletcher–Goldfarb–Shanno，是省内存的BFGS算法。</li>
+<li>Rprop：Root Prop，是RMSprop的根版本。对于网络中的每一个权值参数，当其对应的前面两个梯度符号相同时，则增大该权值参数对应的学习步长；反之，则减小对应的学习步长。因为prop算法违背了随机梯度下降的原理：假设有一个在线学习系统，初始的学习步长较小，在其上应用prop算法。这里有十组训练数据，前九组都使得梯度符号与之前的梯度符号相同，那么学习步长就会增加九次；而第十次得来的梯度符号与之前的相反，那么学习步长就会减小一次。这样一个过程下来，学习步长会增长很多，如果系统的训练数据集非常之大，那学习步长可能频繁得来回波动，这样肯定是不利于学习的。</li>
+</ol>
+<p>这里放上两个我觉得很好的图<br><img src="https://github.com/lindongding/Blog-Picture/blob/master/损失平面等高线.gif?raw=true" width="50%" height="50%"><center>损失平面等高线</center><br><img src="https://github.com/lindongding/Blog-Picture/blob/master/在鞍点处的比较.gif?raw=true" width="50%" height="50%"><center>在鞍点处的比较</center><br>下面开始我的调参之旅。</p>
+<h4 id="Part-IV：思考，求生"><a href="#Part-IV：思考，求生" class="headerlink" title="Part IV：思考，求生"></a>Part IV：思考，求生</h4><p><strong>思考1:</strong><br>归一化带来的生的希望！在没加归一化之前，一直动荡不停，因为神经网络是一种不具有伸缩不变性的算法，加了归一化后，我们的loss完美如下：（没加之前一直动荡）<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Epoch:<span class="number">1</span> <span class="keyword">is</span> over, use <span class="number">10.74</span> s, loss :<span class="number">701.093194</span></span><br><span class="line">Epoch:<span class="number">2</span> <span class="keyword">is</span> over, use <span class="number">10.44</span> s, loss :<span class="number">615.450666</span></span><br><span class="line">Epoch:<span class="number">3</span> <span class="keyword">is</span> over, use <span class="number">10.48</span> s, loss :<span class="number">558.887629</span></span><br><span class="line">Epoch:<span class="number">4</span> <span class="keyword">is</span> over, use <span class="number">10.48</span> s, loss :<span class="number">508.363413</span></span><br><span class="line">Epoch:<span class="number">5</span> <span class="keyword">is</span> over, use <span class="number">10.23</span> s, loss :<span class="number">475.476752</span></span><br><span class="line">Epoch:<span class="number">6</span> <span class="keyword">is</span> over, use <span class="number">10.46</span> s, loss :<span class="number">443.674092</span></span><br><span class="line">Epoch:<span class="number">7</span> <span class="keyword">is</span> over, use <span class="number">10.25</span> s, loss :<span class="number">426.693998</span></span><br><span class="line">Epoch:<span class="number">8</span> <span class="keyword">is</span> over, use <span class="number">10.34</span> s, loss :<span class="number">381.217870</span></span><br><span class="line">Epoch:<span class="number">9</span> <span class="keyword">is</span> over, use <span class="number">10.40</span> s, loss :<span class="number">358.103900</span></span><br><span class="line">Epoch:<span class="number">10</span> <span class="keyword">is</span> over, use <span class="number">10.13</span> s, loss :<span class="number">331.336847</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>思考2:</strong><br>这里有个很大的问题，数据集里分布很不均匀，正样本所占比例只有0.2%，这类问题称为数据不平衡问题，这里其实有很多操作可以做：<a href="https://blog.csdn.net/login_sonata/article/details/54290402" target="_blank" rel="noopener">参考地址1</a> <a href="https://blog.csdn.net/heyongluoyao8/article/details/49408131" target="_blank" rel="noopener">参考地址2</a></p>
+<ol>
+<li>考虑扩充数据集（no way，这里给的就这么多）</li>
+<li>重采样，这里包括欠采样和过采样，采样算法容易实现，效果也不错，但可能增大模型的偏差（Bias），因为放大或者缩小某些样本的影响相当于改变了原数据集的分布。对不同的类别也要采取不同的采样比例，但一般不会是1:1，因为与现实情况相差甚远，压缩大类的数据是个不错的选择。</li>
+<li>人造数据。在该类下所有样本的每个属性特征的取值空间中随机选取一个组成新的样本，即属性值随机采样。此方法多用于小类中的样本，不过它可能破坏原属性的线性关系。如在图像中，对一幅图像进行扭曲得到另一幅图像，即改变了原图像的某些特征值，但是该方法可能会产生现实中不存在的样本。还有 SMOTE等方法。</li>
+<li>改变分类算法。1. 在Pytorch中的weight可以设置不同的权重。2.把小类点设为异常点转化为异常点检测问题，此时分类器需要学习到大类的决策分界面，即分类器是一个单个类分类器（One Class Classifier）。3.boosting方法。4. 决策树算法，决策树往往在类别不均衡数据上表现不错。</li>
+<li>评价指标修改。评价指标有Accuracy，Precision，Recall，F1_score，ROC曲线，AUC曲线，PR曲线。对于不均衡数据，Accuracy，Precision可能已经失效，考虑使用别的评价指标。<a href="https://kexue.fm/archives/4293" target="_blank" rel="noopener">参考：更好的损失函数</a></li>
+</ol>
+<p><strong>思考3:</strong><br>交叉验证。sklearn里已经有了很多的现成工具我们可以用，这里列出一部分（话说用的时候才发现sklearn已经升级到0.19版本了，手动update一下）：</p>
+<ol>
+<li>KFold：最基础的CV算法</li>
+<li>StratifiedKfold：在KFold基础上，保证划分的k份中，每一份内各个类别数据的比例和原始数据集中各个类别的比例相同。（这个对我们有利）</li>
+<li>LeaveOneOut：每个样本单独作为验证集,其余的N-1个样本作为训练集,所以LOO-CV会得到N个模型,用这N个模型最终的验证集的分类准确率的平均数作为此下LOO-CV分类器的性能指标。</li>
+<li>LeavePOut：每次从整体样本中去除p条样本作为测试集，如果共有n条样本数据，那么会生成（n/p）个训练集/测试集对。和LOO，KFold不同，这种策略中p个样本中会有重叠。</li>
+<li>LeaveOneLabelOut：这种策略划分样本时，会根据第三方提供的整数型样本类标号进行划分。每次划分数据集时，取出某个属于某个类标号的样本作为测试集，剩余的作为训练集。</li>
+<li>LeavePLabelOut：与Leave-One-Label-Out类似，但这种策略每次取p种类标号的数据作为测试集，其余作为训练集。</li>
+</ol>
+<p>交叉验证之后，就可以利用sklearn的metrics模块来计算分数。这里也列一下一些指标（在sklearn的api document里有很多indicator：classification，regression，multilabel ranking，有很多:<a href="http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics" target="_blank" rel="noopener">传送门</a></p>
+<ol>
+<li>accuracy：所有分类正确的百分比。分类准确率这一衡量分类器的标准比较容易理解，但是它不能反应出响应值的潜在分布，也不能反应分类器犯错的类型。</li>
+<li>precision：正确被检索的item占所有”实际被检索到的(TP+FP)”的比例</li>
+<li>recall：所有准确的条目有多少被检索到。</li>
+<li>f1_score：结合Precision和Recall</li>
+<li>roc：Receiver Operating Characteristic，它能正确地识别正例的比例与模型错误地把负例数据识别成正例的比例之间的权衡。当测试集中的正负样本的分布变化的时候，ROC曲线能够保持不变。</li>
+<li>auc：Area Under Curve被定义为ROC曲线下的面积，显然这个面积的数值不会大于1。又由于ROC曲线一般都处于y=x这条直线的上方，所以AUC的取值范围在0.5和1之间。使用AUC值作为评价标准是因为很多时候ROC曲线并不能清晰的说明哪个分类器的效果更好，而作为一个数值，对应AUC更大的分类器效果更好。</li>
+<li>roc_auc_score：直接根据真实值（必须是二值）、预测值（可以是0/1,也可以是proba值）计算出auc值。<br>对于这里的分布及其不均匀的情况，直接使用roc_auc_score<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">_, vali_predict = torch.max(net(Variable(torch.from_numpy(X_vali)).float()).data, <span class="number">1</span>)</span><br><span class="line">vali_predict = vali_predict.cpu().numpy()</span><br><span class="line">vali_auc = metrics.roc_auc_score(y_vali,vali_predict)</span><br><span class="line"><span class="keyword">print</span> (vali_auc)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><strong>思考4:</strong><br>Optimizer的选择。我这里尝试了不同的Optimizer对结果的影响：</p>
+<ol>
+<li>SGD+Momentum：半数EPOCH之前的M=0.8，大概800s左右训练完一轮，但是AUC只有0.70左右，很不满意…分析了下原因，可能是过拟合了，设置了epoch=100，应该设成80左右。</li>
+<li>Adam：无脑Adam，AUC在70左右。</li>
+</ol>
+<p>因为我尝试了各种优化器后，基本上都停在70左右，对结果的影响不大，应该是模型的能力太强，造成了过拟合问题，后面我想到可以每一个epoch输出vali的auc，提前终止</p>
+<p><strong>思考5:</strong><br>模型修改。这里也尝试了多种模型。我们先分析一下。</p>
+<ol>
+<li>我们数据集很多是0，1的数据集，可以先将数据集分成两部分，一部分是连续数据的，一部分是离散的，对于离散的，我们先用一个RandomForest做分类，连续的用神经网络做分类，然后对他们的结果进行结合（投票也好，再经过一个神经网络也好）</li>
+<li>Xgboost。应用GridSearchCV来进行网格搜索，效果还是很好的。<br>基本上至此，基本上最高只能到90%左右，运气好的话，可以到90.5%最多。那思考，是不是数据特征太多了，我们没有做过降维，现在是1466维。我有个猜测：<br>数据维度最佳为样本数据量的平方根，事实证明，猜想有问题，<a href="http://ufldl.stanford.edu/wiki/index.php/%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90" target="_blank" rel="noopener">看网址</a><br>只是个猜测，接下来我们先进行降维，然后再用神经网络。</li>
+</ol>
+<p><strong>思考6:</strong><br><strong>是否损失了信息或者引入噪声？</strong>其实我们的特征工程做的并不是很够，直接把非数值类型映射成one hot这样会引入很多不必要的信息，或者说噪声。而损失信息的地方应该就是对时间的处理，因为我们是直接按天做的，这样其实丢失了月，年的信息。<br>如果想人工找出的话，我能想到的就是把字符拆分成多种形式 比如 E12：</p>
+<ol>
+<li>按字母和数字划分</li>
+<li>直接合并在一起视为一个字符</li>
+<li>so on<br>然后变成one hot，看看哪一列或者是哪一些跟label的相关性最大，保留那一列。或者直接以现在扩充出来的来做，看看哪一列跟label的相关性最大。</li>
+</ol>
+<p><strong>思考7：</strong><br>先用随机森林预测缺失值少的列，然后添加到fulldata里，继续添加最少的，直到defect的列全部用完，可以得到已经填满的full_data。对于种类在100以下的，用分类的方法，100以上的，用回归的方法。</p>
+<h3 id="TBD"><a href="#TBD" class="headerlink" title="TBD"></a>TBD</h3><p>还未结束，之后会更新</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Competition/" rel="tag"># Competition</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">LinDongDing</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-I：规范化数据"><span class="nav-number">1.</span> <span class="nav-text">Part I：规范化数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-II：清洗数据与特征工程"><span class="nav-number">2.</span> <span class="nav-text">Part II：清洗数据与特征工程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-III：分类器（模型构建）"><span class="nav-number">3.</span> <span class="nav-text">Part III：分类器（模型构建）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-IV：思考，求生"><span class="nav-number">4.</span> <span class="nav-text">Part IV：思考，求生</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TBD"><span class="nav-number"></span> <span class="nav-text">TBD</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LinDongDing</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":80,"height":160},"mobile":{"show":true}});</script></body>
+</html>
