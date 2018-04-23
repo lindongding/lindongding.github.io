@@ -89,7 +89,8 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://github.com/lindongding/Blog-Picture/blob/master/2.数据点.jpg?raw=true">
 <meta property="og:image" content="https://github.com/lindongding/Blog-Picture/blob/master/2.决策树.jpg?raw=true">
-<meta property="og:updated_time" content="2018-04-23T16:41:10.080Z">
+<meta property="og:image" content="https://github.com/lindongding/Blog-Picture/blob/master/2.三个臭皮匠.jpg?raw=true">
+<meta property="og:updated_time" content="2018-04-23T17:22:43.685Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从砍刀到火箭炮：XGBoost带你装逼带你飞">
 <meta name="twitter:description" content="这是一篇note，主要记录学习xgboost的过程，可以当作以后面试的资料。">
@@ -103,7 +104,7 @@
     root: '/',
     scheme: 'Mist',
     version: '5.1.4',
-    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
     fancybox: true,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
@@ -345,6 +346,17 @@
 
           
           
+             <span id="/2018/04/24/从砍刀到火箭炮：XGBoost带你装逼带你飞/" class="leancloud_visitors" data-flag-title="从砍刀到火箭炮：XGBoost带你装逼带你飞">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
 
           
 
@@ -380,8 +392,33 @@
 <li>自动提取特征，对缺失值不敏感，不用进行标准化处理</li>
 <li>但是对噪声敏感</li>
 </ol>
-<h4 id="Part-III：GBDT（Gradient-boosting-Decision-Tree梯度提升树）"><a href="#Part-III：GBDT（Gradient-boosting-Decision-Tree梯度提升树）" class="headerlink" title="Part III：GBDT（Gradient boosting Decision Tree梯度提升树）"></a>Part III：GBDT（Gradient boosting Decision Tree梯度提升树）</h4><p>这里不得不提一下boosting方法，Boosting是一族可将弱学习器提升为强学习器的算法，属于集成学习（ensemble learning）的范畴。Boosting方法基于这样一种思想：对于一个复杂任务来说，将多个专家的判断进行适当的综合所得出的判断，要比其中任何一个专家单独的判断要好。<br>Boosting、bagging和stacking是集成学习的三种主要方法。不同于bagging方法，boosting方法通过分步迭代（stage-wise）的方式来构建模型，在迭代的每一步构建的弱学习器都是为了弥补已有模型的不足。Boosting族算法的著名代表是AdaBoost，AdaBoost算法通过给已有模型预测错误的样本更高的权重，使得先前的学习器做错的训练样本在后续受到更多的关注的方式来弥补已有模型的不足。与AdaBoost算法不同，梯度提升方法在迭代的每一步构建一个能够沿着梯度最陡的方向降低损失（steepest-descent）的学习器来弥补已有模型的不足。经典的AdaBoost算法只能处理采用指数损失函数的二分类学习任务，而梯度提升方法通过设置不同的可微损失函数可以处理各类学习任务（多分类、回归、Ranking等），应用范围大大扩展。另一方面，AdaBoost算法对异常点（outlier）比较敏感，而梯度提升算法通过引入bagging思想、加入正则项等方法能够有效地抵御训练数据中的噪音，具有更好的健壮性。这也是为什么梯度提升算法（尤其是采用决策树作为弱学习器的GBDT算法）如此流行的原因，有种观点认为GBDT是性能最好的机器学习算法，这当然有点过于激进又固步自封的味道，但通常各类机器学习算法比赛的赢家们都非常青睐GBDT算法，由此可见该算法的实力不可小觑。<br>基于梯度提升算法的学习器叫做GBM(Gradient Boosting Machine)。理论上，GBM可以选择各种不同的学习算法作为基学习器。现实中，用得最多的基学习器是决策树。为什么梯度提升方法倾向于选择决策树（通常是CART树）作为基学习器呢？这与决策树算法自身的优点有很大的关系。决策树可以认为是if-then规则的集合，易于理解，可解释性强，预测速度快。同时，决策树算法相比于其他的算法需要更少的特征工程，比如可以不用做特征标准化，可以很好的处理字段缺失的数据，也可以不用关心特征间是否相互依赖等。决策树能够自动组合多个特征，它可以毫无压力地处理特征间的交互关系并且是非参数化的，因此你不必担心异常值或者数据是否线性可分（举个例子，决策树能轻松处理好类别A在某个特征维度x的末端，类别B在中间，然后类别A又出现在特征维度x前端的情况）。不过，单独使用决策树算法时，有容易过拟合缺点。所幸的是，通过各种方法，抑制决策树的复杂性，降低单颗决策树的拟合能力，再通过梯度提升的方法集成多个决策树，最终能够很好的解决过拟合的问题。由此可见，梯度提升方法和决策树学习算法可以互相取长补短，是一对完美的搭档。至于抑制单颗决策树的复杂度的方法有很多，比如限制树的最大深度、限制叶子节点的最少样本数量、限制节点分裂时的最少样本数量、吸收bagging的思想对训练样本采样（subsample），在学习单颗决策树时只使用一部分训练样本、借鉴随机森林的思路在学习单颗决策树时只采样一部分特征、在目标函数中添加正则项惩罚复杂的树结构等。现在主流的GBDT算法实现中这些方法基本上都有实现，因此GBDT算法的超参数还是比较多的，应用过程中需要精心调参，并用交叉验证的方法选择最佳参数。<br>GBDT算法可以看成是由K棵树组成的加法模型（Additive Model）</p>
-
+<h4 id="Part-III：GBDT（Gradient-boosting-Decision-Tree梯度提升树）"><a href="#Part-III：GBDT（Gradient-boosting-Decision-Tree梯度提升树）" class="headerlink" title="Part III：GBDT（Gradient boosting Decision Tree梯度提升树）"></a>Part III：GBDT（Gradient boosting Decision Tree梯度提升树）</h4><p>这里不得不提一下boosting方法，Boosting是一族可将弱学习器提升为强学习器的算法，属于集成学习（ensemble learning）的范畴。Boosting方法基于这样一种思想：对于一个复杂任务来说，将多个专家的判断进行适当的综合所得出的判断，要比其中任何一个专家单独的判断要好。<br><img src="https://github.com/lindongding/Blog-Picture/blob/master/2.三个臭皮匠.jpg?raw=true" width="50%" height="50%"><center>三个臭皮匠顶个诸葛亮</center><br>Boosting、bagging和stacking是集成学习的三种主要方法。不同于bagging方法，boosting方法通过分步迭代（stage-wise）的方式来构建模型，在迭代的每一步构建的弱学习器都是为了弥补已有模型的不足。Boosting族算法的著名代表是AdaBoost，AdaBoost算法通过给已有模型预测错误的样本更高的权重，使得先前的学习器做错的训练样本在后续受到更多的关注的方式来弥补已有模型的不足。与AdaBoost算法不同，梯度提升方法在迭代的每一步构建一个能够沿着梯度最陡的方向降低损失（steepest-descent）的学习器来弥补已有模型的不足。经典的AdaBoost算法只能处理采用指数损失函数的二分类学习任务，而梯度提升方法通过设置不同的可微损失函数可以处理各类学习任务（多分类、回归、Ranking等），应用范围大大扩展。另一方面，AdaBoost算法对异常点（outlier）比较敏感，而梯度提升算法通过引入bagging思想、加入正则项等方法能够有效地抵御训练数据中的噪音，具有更好的健壮性。这也是为什么梯度提升算法（尤其是采用决策树作为弱学习器的GBDT算法）如此流行的原因，有种观点认为GBDT是性能最好的机器学习算法，这当然有点过于激进又固步自封的味道，但通常各类机器学习算法比赛的赢家们都非常青睐GBDT算法，由此可见该算法的实力不可小觑。</p>
+<p>基于梯度提升算法的学习器叫做GBM(Gradient Boosting Machine)。理论上，GBM可以选择各种不同的学习算法作为基学习器。现实中，用得最多的基学习器是决策树。为什么梯度提升方法倾向于选择决策树（通常是CART树）作为基学习器呢？这与决策树算法自身的优点有很大的关系。<br><br>决策树可以认为是if-then规则的集合，易于理解，可解释性强，预测速度快。同时，决策树算法相比于其他的算法需要更少的特征工程，比如可以不用做特征标准化，可以很好的处理字段缺失的数据，也可以不用关心特征间是否相互依赖等。决策树能够自动组合多个特征，它可以毫无压力地处理特征间的交互关系并且是非参数化的，因此你不必担心异常值或者数据是否线性可分（举个例子，决策树能轻松处理好类别A在某个特征维度x的末端，类别B在中间，然后类别A又出现在特征维度x前端的情况）。不过，单独使用决策树算法时，有容易过拟合缺点。所幸的是，通过各种方法，抑制决策树的复杂性，降低单颗决策树的拟合能力，再通过梯度提升的方法集成多个决策树，最终能够很好的解决过拟合的问题。由此可见，梯度提升方法和决策树学习算法可以互相取长补短，是一对完美的搭档。至于抑制单颗决策树的复杂度的方法有很多，比如限制树的最大深度、限制叶子节点的最少样本数量、限制节点分裂时的最少样本数量、吸收bagging的思想对训练样本采样（subsample），在学习单颗决策树时只使用一部分训练样本、借鉴随机森林的思路在学习单颗决策树时只采样一部分特征、在目标函数中添加正则项惩罚复杂的树结构等。现在主流的GBDT算法实现中这些方法基本上都有实现，因此GBDT算法的超参数还是比较多的，应用过程中需要精心调参，并用交叉验证的方法选择最佳参数。<br><br>GBDT算法可以看成是由K棵树组成的递增模型（Additive Model）</p>
+<h5 id="Additive-Model"><a href="#Additive-Model" class="headerlink" title="Additive Model"></a>Additive Model</h5><p><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script><br>$$\hat{y_i}=\sum_{k=1}^Kf_k(x_i), f_k\in F$$其中F为所有树组成的函数空间，以回归任务为例，回归树可以看作为一个把特征向量映射为某个score的函数。该模型的参数为：Θ={f1,f2,⋯,fK}。与一般的机器学习算法不同的是，加法模型不是学习d维空间中的权重，而是直接学习函数（决策树）集合。上述加法模型的目标函数定义为：$$Obj=\sum_{i=1}^nl(y_i, \hat{y_i})+\sum_{k=1}^K\Omega(f_k)$$其中Ω表示决策树的复杂度，树的复杂度可以考虑树的节点数量、树的深度或者叶子节点所对应的分数的L2范数等等。<br>解这一优化问题，可以用前向分布算法（forward stagewise algorithm）。因为学习的是加法模型，如果能够从前往后，每一步只学习一个基函数及其系数（结构），逐步逼近优化目标函数，那么就可以简化复杂度。这一学习过程称之为Boosting。在每学习一个函数的时候，都需要拟合前面的残差。<br>假设loss function是square loss，目标函数为：<br>$$Obj^{(t)}=\sum_{I=1}^n(y_i-(\hat{y_i}^{t-1}+f_t(x_i)))^2+\Omega(f_t)+constant =\sum_{I=1}^n[2(\hat{y_i}^{t-1}-y_i)f_t(x_i)+f_t(x_i)^2]+\Omega(f_t)+constant$$<br>推导的时候需要加入Taylor展开，不然会以为公式写错，<a href="https://blog.csdn.net/yangxudong/article/details/53872141" target="_blank" rel="noopener">参考</a><br>一般来说，最小化过程中，constant是没用的，得到$$Obj^{(t)}\approx\sum_{i=1}^n[g_if_t(x_i)+\frac{1}{2}h_if_t^2(x_i)]+\Omega(f_t)$$由于要学习的函数仅仅依赖于目标函数，从上式可以看出只需为学习任务定义好损失函数，并为每个训练样本计算出损失函数的一阶导数和二阶导数，通过在训练样本集上最小化上式即可求得每步要学习的函数f(x)，从而根据加法模型可得最终要学习的模型。</p>
+<h5 id="GBDT"><a href="#GBDT" class="headerlink" title="GBDT"></a>GBDT</h5><p>推导完Additive Model后，我们结合决策树。一颗生成好的决策树，假设其叶子节点个数为T，该决策树是由所有叶子节点对应的值组成的向量\(w\in R^T\)，以及一个把特征向量映射到叶子节点索引（Index）的函数\(q:R^d\to{1,2,…,T}\)组成的。因此，策树可以定义为\(f_t(x)=w_q(x)\)决策树的复杂度可以由正则项\(\Omega(f_t)=\gamma T+\frac{1}{2}\lambda\sum_{j=1}^Tw^2_j\)来定义，即决策树模型的复杂度由生成的树的叶子节点数量和叶子节点对应的值向量的L2范数决定。<br>最后，总结一下GBDT的学习算法： </p>
+<ol>
+<li>算法每次迭代生成一颗新的决策树 </li>
+<li>在每次迭代开始之前，计算损失函数在每个训练样本点的一阶导数和二阶导数</li>
+<li>通过贪心策略生成新的决策树，通过一阶导和二阶导计算每个叶节点对应的预测值 </li>
+<li>把新生成的决策树ft(x)添加到模型中：\(\hat{y}_i^t=\hat{y}_i^{t-1}+f_t(x_i)\)</li>
+</ol>
+<p>通常在第四步，我们把模型更新公式替换为：\(\hat{y}^t_i=\hat{y}_i^{t-1}+\epsilon f_t(x_i)\)，其中\(\epsilon\)称之为步长或者学习率。增加\(\epsilon\)因子的目的是为了避免模型过拟合。总结下GBDT的特点：</p>
+<ol>
+<li>构建T棵树，构建第t棵树的时候要对前t-1棵树的残差进行拟合</li>
+<li>不可并行化</li>
+</ol>
+<h4 id="Part-IV：XGBoost（eXtreme-Gradient-Boosting）"><a href="#Part-IV：XGBoost（eXtreme-Gradient-Boosting）" class="headerlink" title="Part IV：XGBoost（eXtreme Gradient Boosting）"></a>Part IV：XGBoost（eXtreme Gradient Boosting）</h4><p>XGBoost其实只是在GBDT基础上对产生新树的过程的改进。每次拟合产生新的树的时候，遍历所有可能的树，并选择使得目标函数值（cost）最小的树，这样的方法在实践中难以实现，因此需要将步骤进行分解，在构造新的树的时候，每次只产生一个分支，并选择最好的那个分支。如果产生分支的目标函数值（cost）比不产生的时候大或者改进效果不明显，那么就放弃产生分支（相当于truncate，截断）。可以并行化处理，效率比GBDT高，效果比GBDT好。</p>
+<ol>
+<li>传统的GBDT以CART树作为基学习器，XGBoost还支持线性分类器，这个时候XGBoost相当于L1和L2正则化的逻辑斯蒂回归（分类）或者线性回归（回归）</li>
+<li>传统的GBDT在优化的时候只用到一阶导数信息，XGBoost则对代价函数进行了二阶泰勒展开，得到一阶和二阶导数。xgboost工具支持自定义代价函数，只要函数可一阶和二阶求导。</li>
+<li>XGBoost在代价函数中加入了正则项，用于控制模型的复杂度。从权衡方差偏差来看，它降低了模型的方差，使学习出来的模型更加简单，放置过拟合，这也是XGBoost优于传统GBDT的一个特性</li>
+<li>shrinkage（缩减），相当于学习速率（XGBoost中的eta）。XGBoost在进行完一次迭代时，会将叶子节点的权值乘上该系数，主要是为了削弱每棵树的影响，让后面有更大的学习空间。（GBDT也有学习速率）</li>
+<li>列抽样。XGBoost借鉴了随机森林的做法，支持列抽样，不仅防止过 拟合，还能减少计算</li>
+<li>对缺失值的处理。对于特征的值有缺失的样本，XGBoost还可以自动 学习出它的分裂方向</li>
+<li>XGBoost工具支持并行。Boosting不是一种串行的结构吗?怎么并行 的？注意XGBoost的并行不是tree粒度的并行，XGBoost也是一次迭代完才能进行下一次迭代的（第t次迭代的代价函数里包含了前面t-1次迭代的预测值）。XGBoost的并行是在特征粒度上的。我们知道，决策树的学习最耗时的一个步骤就是对特征的值进行排序（因为要确定最佳分割点），XGBoost在训练之前，预先对数据进行了排序，然后保存为block结构，后面的迭代 中重复地使用这个结构，大大减小计算量。这个block结构也使得并行成为了可能，在进行节点的分裂时，需要计算每个特征的增益，最终选增益最大的那个特征去做分裂，那么各个特征的增益计算就可以开多线程进行。</li>
+<li>可并行的近似直方图算法。树节点在进行分裂时，我们需要计算每个特征的每个分割点对应的增益，即用贪心法枚举所有可能的分割点。当数据无法一次载入内存或者在分布式情况下，贪心算法效率就会变得很低，所以xgboost还提出了一种可并行的近似直方图算法，用于高效地生成候选的分割点。</li>
+</ol>
+<h1 id="THE-END"><a href="#THE-END" class="headerlink" title="THE END"></a>THE END</h1>
       
     </div>
     
@@ -390,7 +427,16 @@
 
     
 
+    <div align="center">
+  
+    <div class="copyright">
+    <p><span>
+    <b>本文地址：</b><a href="/2018/04/24/从砍刀到火箭炮：XGBoost带你装逼带你飞/" title="从砍刀到火箭炮：XGBoost带你装逼带你飞">http://lindongding.com/2018/04/24/从砍刀到火箭炮：XGBoost带你装逼带你飞/</a><br/><b>转载请注明出处，谢谢！</b>
+    </span></p>
+    </div>
     
+  
+</div>
 
     
 
@@ -469,6 +515,8 @@
   </div>
 
   <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
     
     <div class="sidebar-inner">
 
@@ -577,7 +625,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-I：起源及参考"><span class="nav-number">1.</span> <span class="nav-text">Part I：起源及参考</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-II-RandomForest"><span class="nav-number">2.</span> <span class="nav-text">Part II: RandomForest</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-III：GBDT（Gradient-boosting-Decision-Tree梯度提升树）"><span class="nav-number">3.</span> <span class="nav-text">Part III：GBDT（Gradient boosting Decision Tree梯度提升树）</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-I：起源及参考"><span class="nav-number">1.</span> <span class="nav-text">Part I：起源及参考</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-II-RandomForest"><span class="nav-number">2.</span> <span class="nav-text">Part II: RandomForest</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-III：GBDT（Gradient-boosting-Decision-Tree梯度提升树）"><span class="nav-number">3.</span> <span class="nav-text">Part III：GBDT（Gradient boosting Decision Tree梯度提升树）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Additive-Model"><span class="nav-number">3.1.</span> <span class="nav-text">Additive Model</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#GBDT"><span class="nav-number">3.2.</span> <span class="nav-text">GBDT</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-IV：XGBoost（eXtreme-Gradient-Boosting）"><span class="nav-number">4.</span> <span class="nav-text">Part IV：XGBoost（eXtreme Gradient Boosting）</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#THE-END"><span class="nav-number"></span> <span class="nav-text">THE END</span></a></div>
             
 
           </div>
@@ -635,6 +683,8 @@
     
       <div class="back-to-top">
         <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
         
       </div>
     
@@ -770,15 +820,125 @@
   
 
   
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("XjQ8Re3dM64voO3v2BeBq9hL-gzGzoHsz", "uojl0LgohBFuXgNNvBzyoLaC");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
 
   
 
   
+
+  
   
 
   
 
   
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
 
   
 
