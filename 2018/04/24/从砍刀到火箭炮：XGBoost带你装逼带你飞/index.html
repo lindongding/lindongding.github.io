@@ -90,7 +90,7 @@
 <meta property="og:image" content="https://github.com/lindongding/Blog-Picture/blob/master/2.数据点.jpg?raw=true">
 <meta property="og:image" content="https://github.com/lindongding/Blog-Picture/blob/master/2.决策树.jpg?raw=true">
 <meta property="og:image" content="https://github.com/lindongding/Blog-Picture/blob/master/2.三个臭皮匠.jpg?raw=true">
-<meta property="og:updated_time" content="2018-04-23T17:22:43.685Z">
+<meta property="og:updated_time" content="2018-04-24T15:49:34.613Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从砍刀到火箭炮：XGBoost带你装逼带你飞">
 <meta name="twitter:description" content="这是一篇note，主要记录学习xgboost的过程，可以当作以后面试的资料。">
@@ -368,6 +368,7 @@
 
       
         <p>这是一篇note，主要记录学习xgboost的过程，可以当作以后面试的资料。<br><a id="more"></a></p>
+<p><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script></p>
 <h4 id="Part-I：起源及参考"><a href="#Part-I：起源及参考" class="headerlink" title="Part I：起源及参考"></a>Part I：起源及参考</h4><p>因为最近在用xgboost来打比赛，但是自己对这个方法并不是很了解，所以想着还是了解之后再去使用。我使用的参考文献都会放在这里<br><a href="http://skyhigh233.com/blog/2016/12/01/gbdt-and-xgboost/" target="_blank" rel="noopener">RF、GBDT和xgboost原理简述 - 博海文思</a><br><a href="https://blog.csdn.net/zjupeco/article/details/77371645" target="_blank" rel="noopener">RF做特征选择</a><br><a href="https://blog.csdn.net/yangxudong/article/details/53872141" target="_blank" rel="noopener">GBDT算法原理深入解析 - CSDN博客</a><br><a href="https://www.zhihu.com/question/41354392/answer/98658997" target="_blank" rel="noopener">机器学习算法中GBDT和XGBOOST的区别有哪些？ - wepon的回答 - 知乎</a></p>
 <h4 id="Part-II-RandomForest"><a href="#Part-II-RandomForest" class="headerlink" title="Part II: RandomForest"></a>Part II: RandomForest</h4><p>决策树是机器学习的基本模型，不同的决策树，ID3，C4.5，CART，其实只是在分裂结点的筛选上的计算方式不一样，ID3基于信息增益，C4.5基于信息增益率，CART基于Gini指数。然后包含两个过程：找到最优特征以及找到最优分割点（二叉树的话）。在第一步完成后，会生成两个叶节点，我们对这两个叶节点做判断，计算它的Gini(或者信息增益等)值是否足够小（若是，就将其作为叶子不再分类）。将上步得到的叶节点作为新的集合，进行步骤1的分类，延伸出两个新的叶子节点（当然此时该节点变成了父节点）。循环迭代至不再有Gini值不符合标准的叶节点。<br><img src="https://github.com/lindongding/Blog-Picture/blob/master/2.数据点.jpg?raw=true" width="50%" height="50%"><center>数据点</center><br><img src="https://github.com/lindongding/Blog-Picture/blob/master/2.决策树.jpg?raw=true" width="50%" height="50%"><center>决策树</center><br>决策树有个比较大的缺陷，参数的选择很重要，对于上图，如果我们的参数设定的过于细微，那树就会想尽可能分割所有点，会产生过拟合的现象，导致泛化能力变弱。而鉴于这个缺点，随机森林采用多个决策树的投票机制来改善决策树。其机制如下：</p>
 <ol>
