@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://lindongding.com/Resume/index.html</loc>
+    
+    <lastmod>2018-04-24T15:19:48.034Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://lindongding.com/Categories/index.html</loc>
     
     <lastmod>2018-04-24T09:32:52.830Z</lastmod>
@@ -40,13 +47,6 @@
     <loc>http://lindongding.com/2018/04/23/Kaggle-Angels-or-Demons-Process/</loc>
     
     <lastmod>2018-04-23T17:22:41.494Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://lindongding.com/Resume/index.html</loc>
-    
-    <lastmod>2018-04-23T16:30:36.136Z</lastmod>
     
   </url>
   
