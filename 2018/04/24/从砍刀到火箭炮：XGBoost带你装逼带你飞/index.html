@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Notebook,Interview,XGBoost," />
+  <meta name="keywords" content="Notebook,XGBoost,Interview," />
 
 
 
@@ -87,7 +87,7 @@
 
 
 <meta name="description" content="这是一篇note，主要记录学习xgboost的过程，可以当作以后面试的资料。">
-<meta name="keywords" content="Notebook,Interview,XGBoost">
+<meta name="keywords" content="Notebook,XGBoost,Interview">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从砍刀到火箭炮：XGBoost带你装逼带你飞">
 <meta property="og:url" content="http://lindongding.com/2018/04/24/从砍刀到火箭炮：XGBoost带你装逼带你飞/index.html">
@@ -97,7 +97,7 @@
 <meta property="og:image" content="https://github.com/lindongding/Blog-Picture/blob/master/2.数据点.jpg?raw=true">
 <meta property="og:image" content="https://github.com/lindongding/Blog-Picture/blob/master/2.决策树.jpg?raw=true">
 <meta property="og:image" content="https://github.com/lindongding/Blog-Picture/blob/master/2.三个臭皮匠.jpg?raw=true">
-<meta property="og:updated_time" content="2018-04-28T11:23:04.561Z">
+<meta property="og:updated_time" content="2018-04-28T11:50:36.511Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从砍刀到火箭炮：XGBoost带你装逼带你飞">
 <meta name="twitter:description" content="这是一篇note，主要记录学习xgboost的过程，可以当作以后面试的资料。">
@@ -446,7 +446,7 @@
 <li>列抽样。XGBoost借鉴了随机森林的做法，支持列抽样，不仅防止过 拟合，还能减少计算</li>
 <li>对缺失值的处理。对于特征的值有缺失的样本，XGBoost还可以自动 学习出它的分裂方向</li>
 <li>XGBoost工具支持并行。Boosting不是一种串行的结构吗?怎么并行 的？注意XGBoost的并行不是tree粒度的并行，XGBoost也是一次迭代完才能进行下一次迭代的（第t次迭代的代价函数里包含了前面t-1次迭代的预测值）。XGBoost的并行是在特征粒度上的。我们知道，决策树的学习最耗时的一个步骤就是对特征的值进行排序（因为要确定最佳分割点），XGBoost在训练之前，预先对数据进行了排序，然后保存为block结构，后面的迭代 中重复地使用这个结构，大大减小计算量。这个block结构也使得并行成为了可能，在进行节点的分裂时，需要计算每个特征的增益，最终选增益最大的那个特征去做分裂，那么各个特征的增益计算就可以开多线程进行。</li>
-<li>可并行的近似直方图算法。树节点在进行分裂时，我们需要计算每个特征的每个分割点对应的增益，即用贪心法枚举所有可能的分割点。当数据无法一次载入内存或者在分布式情况下，贪心算法效率就会变得很低，所以xgboost还提出了一种可并行的近似直方图算法，用于高效地生成候选的分割点。这里，近似直方图的做法是指的划分割点的时候，用了\epsilon的间隔来做</li>
+<li>可并行的近似直方图算法。树节点在进行分裂时，我们需要计算每个特征的每个分割点对应的增益，即用贪心法枚举所有可能的分割点。当数据无法一次载入内存或者在分布式情况下，贪心算法效率就会变得很低，所以xgboost还提出了一种可并行的近似直方图算法，用于高效地生成候选的分割点。这里，近似直方图的做法是指的划分割点的时候，用了\(\epsilon\)的间隔来做</li>
 </ol>
 <h1 id="THE-END"><a href="#THE-END" class="headerlink" title="THE END"></a>THE END</h1>
       
@@ -476,9 +476,9 @@
           
             <a href="/tags/Notebook/" rel="tag"># Notebook</a>
           
-            <a href="/tags/Interview/" rel="tag"># Interview</a>
-          
             <a href="/tags/XGBoost/" rel="tag"># XGBoost</a>
+          
+            <a href="/tags/Interview/" rel="tag"># Interview</a>
           
         </div>
       
@@ -608,7 +608,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/Tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -697,7 +697,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">10.4k</span>
+    <span title="Site words total count">11.4k</span>
   
 </div>
 

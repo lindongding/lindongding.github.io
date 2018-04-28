@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Notebook,Interview,Engineering," />
+  <meta name="keywords" content="Notebook,Interview,Engineering,Stacking," />
 
 
 
@@ -86,15 +86,23 @@
 
 
 
-<meta name="keywords" content="Notebook,Interview,Engineering">
+<meta name="description" content="最近看了很多模型融合的方法，有bagging和boosting的做法，先简单总结一下。注意这些都是框架而已，基分类器可以自由选择。不过这不是本文的重点，在网上看了部分stacking资料，后面总结一番。">
+<meta name="keywords" content="Notebook,Interview,Engineering,Stacking">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Stacking: Ensemble your Models">
 <meta property="og:url" content="http://lindongding.com/2018/04/28/Stacking-Ensemble-your-Models/index.html">
 <meta property="og:site_name" content="Samuel&#39;s Blog">
+<meta property="og:description" content="最近看了很多模型融合的方法，有bagging和boosting的做法，先简单总结一下。注意这些都是框架而已，基分类器可以自由选择。不过这不是本文的重点，在网上看了部分stacking资料，后面总结一番。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-04-28T09:15:46.117Z">
+<meta property="og:image" content="http://lindongding.com/2018/04/28/Stacking-Ensemble-your-Models/equation1.svg">
+<meta property="og:image" content="http://lindongding.com/2018/04/28/Stacking-Ensemble-your-Models/equation2.svg">
+<meta property="og:image" content="http://lindongding.com/2018/04/28/Stacking-Ensemble-your-Models/equation3.svg">
+<meta property="og:image" content="http://lindongding.com/2018/04/28/Stacking-Ensemble-your-Models/picture1.jpg">
+<meta property="og:updated_time" content="2018-04-28T15:00:33.032Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Stacking: Ensemble your Models">
+<meta name="twitter:description" content="最近看了很多模型融合的方法，有bagging和boosting的做法，先简单总结一下。注意这些都是框架而已，基分类器可以自由选择。不过这不是本文的重点，在网上看了部分stacking资料，后面总结一番。">
+<meta name="twitter:image" content="http://lindongding.com/2018/04/28/Stacking-Ensemble-your-Models/equation1.svg">
 
 
 
@@ -363,7 +371,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  0
+                  993
                 </span>
               
 
@@ -379,7 +387,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  1
+                  4
                 </span>
               
             </div>
@@ -400,7 +408,38 @@
       
 
       
-        <a id="more"></a>
+        <p>最近看了很多模型融合的方法，有bagging和boosting的做法，先简单总结一下。注意这些都是框架而已，基分类器可以自由选择。不过这不是本文的重点，在网上看了部分stacking资料，后面总结一番。<br><a id="more"></a><br>Bagging，Boosting方法总结：</p>
+<ol>
+<li>Bagging的方法主要基于“简单融合”的想法，包括voting，average的方法<ol>
+<li>voting: 简单投票，哪个类别多就哪个</li>
+<li>average: 可以通过模型的效果来求平均，比如ABC模型效果排名A&gt;B&gt;C, 那ensemble的结果可以是3/6&#42;A+2/6&#42;B+1/6&#42;C</li>
+</ol>
+</li>
+<li>Boosting的方法主要基于“迭代提升”的方法，主要有两种，Adaboost是通过改变样本权重来提升效果的方法，GBDT是通过结合前面t-1棵CART树的残差来提升的，XGBoost也是通过结合前面的残差来的，但是不仅是CART树，还可以是线性分类器等等。LightGBM也是，跟XGBoost提升的方法一致，只是在结构上做了改进。</li>
+</ol>
+<h4 id="Part-I-起源"><a href="#Part-I-起源" class="headerlink" title="Part I: 起源"></a>Part I: 起源</h4><p>众所周知，模型融合的方法有很多，bagging是并行化的，对结果的简单融合，boosting是对基分类器的迭代融合，也是一步一步来的，那我们可以想，有没有一种方法，可以“层内并行，层间迭代”的方法呢？（这里是我自己的理解，万事总有因）Stacking就可以解决这样的问题。现在有了这个想法后，我们一步一步的往后推。</p>
+<h4 id="Part-II-简单模型融合-1"><a href="#Part-II-简单模型融合-1" class="headerlink" title="Part II: 简单模型融合[1]"></a>Part II: 简单模型融合<sup>[1]</sup></h4><p>假设现在有二级Stacking架构，3个基础模型M1，M2，M3</p>
+<ol>
+<li>基模型M1，对训练集train训练，然后预测train和test，得到P1和T1<div align="center"><img src="/2018/04/28/Stacking-Ensemble-your-Models/equation1.svg"></div>对于M2，M3同样这样做，可以得到P2，T2，P3，T3. 这样就实现了多个弱模型的要求，“层内并行”，接下来实现ensemble（“层间迭代”）的效果。</li>
+<li>把P1，P2，P3合并，得到（#data&#42;3）列，T1，T2，T3合并，也得到相同shape的矩阵。将P1P2P3视为训练集train2，T1T2T3视为测试集test2<div align="center"><img src="/2018/04/28/Stacking-Ensemble-your-Models/equation2.svg"><img src="/2018/04/28/Stacking-Ensemble-your-Models/equation3.svg"></div></li>
+<li>用第二层模型训练M4训练train2，预测test2，得到最终的结果。</li>
+</ol>
+<p>Stacking的思路就是这种“层内并行，层间迭代”的想法，但是仔细思考，这样有没有问题。可以看出，P1P2P3的得到是通过不同的模型反复的训练train set得到的，可以知道，这样过拟合是十分严重的（因为可以预想到T1T2T3的值的准确率是很低的），因此现在要解决的问题是解决过拟合的前提下得到P1，P2，P3，T1，T2，T3。我们知道的解决过拟合的方法有</p>
+<ul>
+<li>获取更多的数据</li>
+<li>降低模型复杂度</li>
+<li>正则项</li>
+<li>交叉验证</li>
+</ul>
+<h4 id="Part-III-交叉验证融合"><a href="#Part-III-交叉验证融合" class="headerlink" title="Part III: 交叉验证融合"></a>Part III: 交叉验证融合</h4><p>我们这里使用交叉验证的方法来降低过拟合。这里有一张很经典的图<div align="center"><img src="/2018/04/28/Stacking-Ensemble-your-Models/picture1.jpg" alt="Figure 1 5-fold stacking"></div>我们以5折验证的方法得到5部分的数据，split1,…,split5,先用split1-4训练得到，然后预测split5，得到Ps5（#data/5&#42;1）列，预测所有的test，得到<font color="green">Ts5</font>，同样的，对数据集验证集预测出<font color="orange">Ps1</font>，<font color="green">Ts1-4</font>，然后把Ps1-5叠加起来得到新的训练集train2(#data&#42;1)列，也就是图中<font color="orange">橙色</font>的部分，而对于Ts1-5，可以通过求平均值得到test2(#data&#42;1)列。然后用train2去预测test2就好了。</p>
+<h4 id="Part-IV-工具包以及Python代码"><a href="#Part-IV-工具包以及Python代码" class="headerlink" title="Part IV: 工具包以及Python代码"></a>Part IV: 工具包以及Python代码</h4><p>因为我只用python，找到了一个好像是stacking的包，直接pip就好<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip install stacking</span><br><span class="line">或</span><br><span class="line">pip install vecstack</span><br></pre></td></tr></table></figure></p>
+<p>但是在这里我觉得还不如自己写一遍好一些，代码如下:</p>
+<pre><code class="python">
+</code></pre>
+<h4 id="Part-V-效果"><a href="#Part-V-效果" class="headerlink" title="Part V: 效果"></a>Part V: 效果</h4><p>TBD</p>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><p><a href="https://zhuanlan.zhihu.com/p/25836678" target="_blank" rel="noopener">[1] 【机器学习】模型融合方法概述</a><br><a href="https://zhuanlan.zhihu.com/p/26890738" target="_blank" rel="noopener">[2] Kaggle机器学习之模型融合（stacking）心得</a><br><a href="https://zhuanlan.zhihu.com/p/27493821" target="_blank" rel="noopener">[3] 【干货】比赛后期大招之stacking技术分享</a><br><a href="https://github.com/vecxoz/vecstack" target="_blank" rel="noopener">[4] Python package for stacking&#40;machine learning technique&#41;</a>]<br><a href="https://www.kaggle.com/mubashir44/simple-ensemble-model-stacking" target="_blank" rel="noopener">[5] Simple Ensemble Model&#40;Stacking&#40;</a><br><a href="https://www.kaggle.com/arthurtok/introduction-to-ensembling-stacking-in-python" target="_blank" rel="noopener">[6] Introduction to Ensembling/Stacking in Python
+</a></p>
+
       
     </div>
     
@@ -431,6 +470,8 @@
             <a href="/tags/Interview/" rel="tag"># Interview</a>
           
             <a href="/tags/Engineering/" rel="tag"># Engineering</a>
+          
+            <a href="/tags/Stacking/" rel="tag"># Stacking</a>
           
         </div>
       
@@ -505,8 +546,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -547,7 +597,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/Tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -593,6 +643,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-I-起源"><span class="nav-number">1.</span> <span class="nav-text">Part I: 起源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-II-简单模型融合-1"><span class="nav-number">2.</span> <span class="nav-text">Part II: 简单模型融合[1]</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-III-交叉验证融合"><span class="nav-number">3.</span> <span class="nav-text">Part III: 交叉验证融合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-IV-工具包以及Python代码"><span class="nav-number">4.</span> <span class="nav-text">Part IV: 工具包以及Python代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-V-效果"><span class="nav-number">5.</span> <span class="nav-text">Part V: 效果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Reference"><span class="nav-number">6.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -620,7 +686,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">10.4k</span>
+    <span title="Site words total count">11.4k</span>
   
 </div>
 
@@ -920,6 +986,26 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
   
 
 
