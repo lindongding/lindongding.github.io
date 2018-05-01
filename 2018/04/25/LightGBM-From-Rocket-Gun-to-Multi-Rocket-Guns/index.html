@@ -86,19 +86,19 @@
 
 
 
-<meta name="description" content="Last week, I writed a note about XGBoost. Today, I will show you LGBM, which is more convenient and faster than XGBoost. If XGBoost brings us a rocket gun, LGBM brings us a multi-rocket guns. (English">
+<meta name="description" content="Last week, I writed a note about XGBoost. Today, I show you LGBM, which is more convenient and faster than XGBoost. If XGBoost brings us a rocket gun, LGBM brings us a multi-rocket guns. (English vers">
 <meta name="keywords" content="Notebook,XGBoost,Interview,Engineering">
 <meta property="og:type" content="article">
 <meta property="og:title" content="LightGBM: From Rocket Gun to Multi-Rocket Guns">
 <meta property="og:url" content="http://lindongding.com/2018/04/25/LightGBM-From-Rocket-Gun-to-Multi-Rocket-Guns/index.html">
 <meta property="og:site_name" content="Samuel&#39;s Blog">
-<meta property="og:description" content="Last week, I writed a note about XGBoost. Today, I will show you LGBM, which is more convenient and faster than XGBoost. If XGBoost brings us a rocket gun, LGBM brings us a multi-rocket guns. (English">
+<meta property="og:description" content="Last week, I writed a note about XGBoost. Today, I show you LGBM, which is more convenient and faster than XGBoost. If XGBoost brings us a rocket gun, LGBM brings us a multi-rocket guns. (English vers">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://lindongding.com/2018/04/25/LightGBM-From-Rocket-Gun-to-Multi-Rocket-Guns/histogram-wiki.png">
-<meta property="og:updated_time" content="2018-04-28T11:49:06.430Z">
+<meta property="og:updated_time" content="2018-05-01T17:40:08.381Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LightGBM: From Rocket Gun to Multi-Rocket Guns">
-<meta name="twitter:description" content="Last week, I writed a note about XGBoost. Today, I will show you LGBM, which is more convenient and faster than XGBoost. If XGBoost brings us a rocket gun, LGBM brings us a multi-rocket guns. (English">
+<meta name="twitter:description" content="Last week, I writed a note about XGBoost. Today, I show you LGBM, which is more convenient and faster than XGBoost. If XGBoost brings us a rocket gun, LGBM brings us a multi-rocket guns. (English vers">
 <meta name="twitter:image" content="http://lindongding.com/2018/04/25/LightGBM-From-Rocket-Gun-to-Multi-Rocket-Guns/histogram-wiki.png">
 
 
@@ -368,7 +368,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  637
+                  636
                 </span>
               
 
@@ -405,7 +405,7 @@
       
 
       
-        <p>Last week, I writed a note about XGBoost. Today, I will show you LGBM, which is more convenient and faster than XGBoost. If XGBoost brings us a rocket gun, LGBM brings us a multi-rocket guns. (English version. Maybe there are many Syntax errors. 0.0)<br><a id="more"></a></p>
+        <p>Last week, I writed a note about XGBoost. Today, I show you LGBM, which is more convenient and faster than XGBoost. If XGBoost brings us a rocket gun, LGBM brings us a multi-rocket guns. (English version. Maybe there are many Syntax errors. 0.0)<br><a id="more"></a></p>
 <h4 id="Part-1-Origin"><a href="#Part-1-Origin" class="headerlink" title="Part 1 Origin"></a>Part 1 Origin</h4><p>We know GBDT models are so powerful that it can handle lots of data science competitions, but it also has a big problem: <strong>Huge Memory Requirement</strong>. In other words, it consumes lots of memory while running. Of course, you could split dataset into several parts and store in disk, and feed to the model step by step. But it’s a bad method because of disk’s speed. It’s too slow. Thanks to Microsoft DMTK group, We have LightGBM(Light Gradient Boosting Machine).</p>
 <h4 id="Part-II-Histogram-Algorithm"><a href="#Part-II-Histogram-Algorithm" class="headerlink" title="Part II Histogram Algorithm"></a>Part II Histogram Algorithm</h4><p>Histogram algorithm is one of LightGBM’s accelerated methods. Actually, histogram is a statistical algorithm. It calculates kinds of categories in one feature and store into bins. Like <strong>Figure 1: Histogram.</strong> LightGBM uses bins to store histogram, every bin has a range of data.</p>
 <p><div align="center"><img src="/2018/04/25/LightGBM-From-Rocket-Gun-to-Multi-Rocket-Guns/histogram-wiki.png" alt="Histogram" title="Histogram"></div><br>Compared to Pre-sorted Algorithm, histogram only need 1/8 of memory that pre-sorted need(If use 256 bins) and need less time(sort with bins and leaf histogram can be obtained by the histogram of its father node and brother’s node). View <a href="https://www.zhihu.com/question/51644470" target="_blank" rel="noopener">Zhihu LightGBM</a> for detailed information.<br>Of course, the histogram algorithm also has shortcomings. With bins, it couldn’t find exact segmentation point, which makes the training error not good as pre-sorted algorithm. However, from the experimental results, the difference between them isn’t big, even better. In fact, decision tree isn’t sensitive to the accuracy of the segmentation points. We could regard coarse segmentation points as the regularization item of the LGBM model.</p>
@@ -674,7 +674,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">12.6k</span>
+    <span title="Site words total count">12.7k</span>
   
 </div>
 

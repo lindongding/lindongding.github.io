@@ -97,7 +97,7 @@
 <meta property="og:image" content="https://github.com/lindongding/Blog-Picture/blob/master/2.数据点.jpg?raw=true">
 <meta property="og:image" content="https://github.com/lindongding/Blog-Picture/blob/master/2.决策树.jpg?raw=true">
 <meta property="og:image" content="https://github.com/lindongding/Blog-Picture/blob/master/2.三个臭皮匠.jpg?raw=true">
-<meta property="og:updated_time" content="2018-04-28T11:50:36.511Z">
+<meta property="og:updated_time" content="2018-05-01T17:33:40.547Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从砍刀到火箭炮：XGBoost带你装逼带你飞">
 <meta name="twitter:description" content="这是一篇note，主要记录学习xgboost的过程，可以当作以后面试的资料。">
@@ -370,7 +370,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  4,102
+                  4,100
                 </span>
               
 
@@ -448,7 +448,7 @@
 <li>XGBoost工具支持并行。Boosting不是一种串行的结构吗?怎么并行 的？注意XGBoost的并行不是tree粒度的并行，XGBoost也是一次迭代完才能进行下一次迭代的（第t次迭代的代价函数里包含了前面t-1次迭代的预测值）。XGBoost的并行是在特征粒度上的。我们知道，决策树的学习最耗时的一个步骤就是对特征的值进行排序（因为要确定最佳分割点），XGBoost在训练之前，预先对数据进行了排序，然后保存为block结构，后面的迭代 中重复地使用这个结构，大大减小计算量。这个block结构也使得并行成为了可能，在进行节点的分裂时，需要计算每个特征的增益，最终选增益最大的那个特征去做分裂，那么各个特征的增益计算就可以开多线程进行。</li>
 <li>可并行的近似直方图算法。树节点在进行分裂时，我们需要计算每个特征的每个分割点对应的增益，即用贪心法枚举所有可能的分割点。当数据无法一次载入内存或者在分布式情况下，贪心算法效率就会变得很低，所以xgboost还提出了一种可并行的近似直方图算法，用于高效地生成候选的分割点。这里，近似直方图的做法是指的划分割点的时候，用了\(\epsilon\)的间隔来做</li>
 </ol>
-<h1 id="THE-END"><a href="#THE-END" class="headerlink" title="THE END"></a>THE END</h1>
+
       
     </div>
     
@@ -663,7 +663,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-I：起源及参考"><span class="nav-number">1.</span> <span class="nav-text">Part I：起源及参考</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-II-RandomForest"><span class="nav-number">2.</span> <span class="nav-text">Part II: RandomForest</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-III：GBDT（Gradient-boosting-Decision-Tree梯度提升树）"><span class="nav-number">3.</span> <span class="nav-text">Part III：GBDT（Gradient boosting Decision Tree梯度提升树）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Additive-Model"><span class="nav-number">3.1.</span> <span class="nav-text">Additive Model</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#GBDT"><span class="nav-number">3.2.</span> <span class="nav-text">GBDT</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-IV：XGBoost（eXtreme-Gradient-Boosting）"><span class="nav-number">4.</span> <span class="nav-text">Part IV：XGBoost（eXtreme Gradient Boosting）</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#THE-END"><span class="nav-number"></span> <span class="nav-text">THE END</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-I：起源及参考"><span class="nav-number">1.</span> <span class="nav-text">Part I：起源及参考</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-II-RandomForest"><span class="nav-number">2.</span> <span class="nav-text">Part II: RandomForest</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-III：GBDT（Gradient-boosting-Decision-Tree梯度提升树）"><span class="nav-number">3.</span> <span class="nav-text">Part III：GBDT（Gradient boosting Decision Tree梯度提升树）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Additive-Model"><span class="nav-number">3.1.</span> <span class="nav-text">Additive Model</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#GBDT"><span class="nav-number">3.2.</span> <span class="nav-text">GBDT</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-IV：XGBoost（eXtreme-Gradient-Boosting）"><span class="nav-number">4.</span> <span class="nav-text">Part IV：XGBoost（eXtreme Gradient Boosting）</span></a></li></ol></div>
             
 
           </div>
@@ -697,7 +697,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">12.6k</span>
+    <span title="Site words total count">12.7k</span>
   
 </div>
 
