@@ -96,7 +96,7 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://github.com/lindongding/Blog-Picture/blob/master/损失平面等高线.gif?raw=true">
 <meta property="og:image" content="https://github.com/lindongding/Blog-Picture/blob/master/在鞍点处的比较.gif?raw=true">
-<meta property="og:updated_time" content="2018-04-28T14:31:56.220Z">
+<meta property="og:updated_time" content="2018-05-01T05:30:09.155Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kaggle:Angels or Demons Process">
 <meta name="twitter:description" content="最近在处理一个数据集，这里记录下我对这些数据的处理过程。数据集不是公开的，所以这里不贴出地址。PS：本文章只是笔记，处理过程可能不适用于别的数据集。代码地址在这">
@@ -369,7 +369,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  5,704
+                  6,503
                 </span>
               
 
@@ -385,7 +385,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  22
+                  24
                 </span>
               
             </div>
@@ -505,14 +505,28 @@
 <li>我们数据集很多是0，1的数据集，可以先将数据集分成两部分，一部分是连续数据的，一部分是离散的，对于离散的，我们先用一个RandomForest做分类，连续的用神经网络做分类，然后对他们的结果进行结合（投票也好，再经过一个神经网络也好）</li>
 <li>Xgboost。应用GridSearchCV来进行网格搜索，效果还是很好的。<br>基本上至此，基本上最高只能到90%左右，运气好的话，可以到90.5%最多。那思考，是不是数据特征太多了，我们没有做过降维，现在是1466维。我有个猜测：<br>数据维度最佳为样本数据量的平方根，事实证明，猜想有问题，<a href="http://ufldl.stanford.edu/wiki/index.php/%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90" target="_blank" rel="noopener">看网址</a><br>只是个猜测，接下来我们先进行降维，然后再用神经网络。</li>
 </ol>
-<p><strong>思考6:</strong><br><strong>是否损失了信息或者引入噪声？</strong>其实我们的特征工程做的并不是很够，直接把非数值类型映射成one hot这样会引入很多不必要的信息，或者说噪声。而损失信息的地方应该就是对时间的处理，因为我们是直接按天做的，这样其实丢失了月，年的信息。<br>如果想人工找出的话，我能想到的就是把字符拆分成多种形式 比如 E12：</p>
+<p><strong>思考6:</strong><br><strong>是否损失了信息或者引入噪声？</strong>其实我们的特征工程做的并不是很够，直接把非数值类型映射成one hot这样会引入很多不必要的信息，或者说噪声。而损失信息的地方应该就是对时间的处理，因为我们是直接按距离最早的天做的，这样其实丢失了月，年的信息。<br>如果想人工找出的话，我能想到的就是把字符拆分成多种形式 比如 E12：</p>
 <ol>
 <li>按字母和数字划分</li>
 <li>直接合并在一起视为一个字符</li>
-<li>so on<br>然后变成one hot，看看哪一列或者是哪一些跟label的相关性最大，保留那一列。或者直接以现在扩充出来的来做，看看哪一列跟label的相关性最大。</li>
+<li>时间的月，年，日分开来</li>
+<li>年月合在一起<br>然后变成one hot，看看哪一列或者是哪一些跟label的相关性最大，保留那一列。或者直接以现在扩充出来的来做，看看哪一列跟label的相关性最大。噪声对一些模型的影响是致命的，比如RandomForest。</li>
 </ol>
-<p><strong>思考7：</strong><br>先用随机森林预测缺失值少的列，然后添加到fulldata里，继续添加最少的，直到defect的列全部用完，可以得到已经填满的full_data。对于种类在100以下的，用分类的方法，100以上的，用回归的方法。</p>
-<h1 id="TBD"><a href="#TBD" class="headerlink" title="TBD"></a>TBD</h1><p>还未结束，之后会更新</p>
+<p><strong>思考7：</strong><br>先用随机森林预测缺失值少的列，然后添加到fulldata里，继续添加最少的，直到defect的列全部用完，可以得到已经填满的full_data。对于种类在100以下的，用分类的方法，100以上的，用回归的方法。但是这样的效果其实并不好，过拟合十分严重</p>
+<p><strong>思考8:</strong><br>继续做特征工程，发现有很多列都是字母加数值的形式，从保留最大的信息的原则来看，可以先拆开来，然后再做one-hot矩阵或者直接做factorize，然后再用树模型这种 <strong>可以自己筛选特征的（其实只是通过分裂点看看对结果的增益）</strong> 的分类器去分类，我们要做的就是尽可能的挖掘信息。</p>
+<p><strong>思考9:</strong><br>模型融合，看了很多网上的文章，说是到最后基本上都是在ensemble模型了，有三个办法，bagging，boosting，stacking，考虑再三，bagging的话，这题目的标准是auc，并不适合vote，也不清楚哪种分类器的效果更好进行加权得结果；boosting的话，其实XGBoost，LightGBM已经可以说是做到了极致了，感觉再继续做boosting收益不高；stacking，新的融合思路，可以试试，然后就用stacking去做。事实证明，stacking在本题有很好的效果，我的猜测是，stacking第一层先筛选特征，用模型的输出来表示特征（因为我是从尽可能保留信息入手，通过Randomforest可以看到很多重要性为0的列，第一层stacking主要是用在筛选），第二层做分类。因为我保留了尽可能多的特征，所以stacking刚好用上了。</p>
+<p><strong>总结：</strong></p>
+<ol>
+<li>数据不平衡就用XGBoost等树模型</li>
+<li>尽可能的先保留所有的信息</li>
+<li>缺失值很大的部分可以不填充，让树来决定</li>
+<li>可以先用RadomForest来输出特征重要性，再喂给SVM，NN等模型</li>
+<li>模型融合一定要做，这部分会提高很多，融合的时候可以是不同参数的同一模型，尽可能做到模型是交叉的就好。因为第二层分类有点像NN，所以可以通过剔除不同模型来检测哪些效果好。第二层可以用XGBoost也可以用LR等简单模型，因为此时特征已经很少。</li>
+<li>LightGBM在很多地方上比XGBoost更好用，可调参数很多，速度也更快（除了一用GPU就崩…）</li>
+<li>MLP模型其实是应该效果更好的，但是对特征的要求比较高，XGBoost更像是万能遥控，MLP是单一遥控，但是可定制性更强（经过特征筛选，PCA，归一化，Corr分析，效果应该是更好，因为模型表达能力更强大，正则项也可定制）</li>
+<li>nohup这东西有毒…有的时候子线程程序会因为内存使用过大而被kill，但是父线程还在运行，造成僵尸进程（服务器上已经有大量超过100小时还在运行的程序…估计大部分是这个造成的，建议大家尽可能的去用htop看自己名下的线程，不要留下僵尸程序）</li>
+</ol>
+<p>最后，这是本文的代码GitHub地址：<a href="https://github.com/lindongding/AngelOrDemon" target="_blank" rel="noopener">传送门</a></p>
 
       
     </div>
@@ -722,7 +736,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-I：规范化数据"><span class="nav-number">1.</span> <span class="nav-text">Part I：规范化数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-II：清洗数据与特征工程"><span class="nav-number">2.</span> <span class="nav-text">Part II：清洗数据与特征工程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-III：分类器（模型构建）"><span class="nav-number">3.</span> <span class="nav-text">Part III：分类器（模型构建）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-IV：思考，求生"><span class="nav-number">4.</span> <span class="nav-text">Part IV：思考，求生</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TBD"><span class="nav-number"></span> <span class="nav-text">TBD</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-I：规范化数据"><span class="nav-number">1.</span> <span class="nav-text">Part I：规范化数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-II：清洗数据与特征工程"><span class="nav-number">2.</span> <span class="nav-text">Part II：清洗数据与特征工程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-III：分类器（模型构建）"><span class="nav-number">3.</span> <span class="nav-text">Part III：分类器（模型构建）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-IV：思考，求生"><span class="nav-number">4.</span> <span class="nav-text">Part IV：思考，求生</span></a></li></ol></div>
             
 
           </div>
@@ -756,7 +770,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">11.8k</span>
+    <span title="Site words total count">12.6k</span>
   
 </div>
 
