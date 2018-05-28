@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Notebook,Interview,DeepLearning," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="这是一篇note，主要记录各个网站上深度学习面试时候的知识点，可以当作以后准备面试的资料。">
+<meta name="keywords" content="Notebook,Interview,DeepLearning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习面试笔记">
+<meta property="og:url" content="http://lindongding.com/2018/05/28/深度学习面试笔记/index.html">
+<meta property="og:site_name" content="Samuel&#39;s Blog">
+<meta property="og:description" content="这是一篇note，主要记录各个网站上深度学习面试时候的知识点，可以当作以后准备面试的资料。">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-05-28T10:09:22.243Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深度学习面试笔记">
+<meta name="twitter:description" content="这是一篇note，主要记录各个网站上深度学习面试时候的知识点，可以当作以后准备面试的资料。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://lindongding.com/2018/05/28/深度学习面试笔记/"/>
+
+
+
+
+
+  <title>深度学习面试笔记 | Samuel's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+    <a href="https://github.com/lindongding"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Samuel's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">lindongding's Personal Website</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/Resume/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-address-card"></i> <br />
+            
+            resume
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://lindongding.com/2018/05/28/深度学习面试笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LinDongDing">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Samuel's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">深度学习面试笔记</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-28T16:43:19+08:00">
+                2018-05-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Technology/" itemprop="url" rel="index">
+                    <span itemprop="name">Technology</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/05/28/深度学习面试笔记/" class="leancloud_visitors" data-flag-title="深度学习面试笔记">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  5,695
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  20
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这是一篇note，主要记录各个网站上深度学习面试时候的知识点，可以当作以后准备面试的资料。<br><a id="more"></a></p>
+<h4 id="SGD中S（Stochastic）代表什么"><a href="#SGD中S（Stochastic）代表什么" class="headerlink" title="SGD中S（Stochastic）代表什么"></a>SGD中S（Stochastic）代表什么</h4><p>答: 随机选取一个样本来学习。<br>知识点：梯度下降的优化框架有三种：批量梯度下降（全），随机梯度下降（一），小批量梯度下降（mini）。它们不同之处在于每次学习（更新模型参数）使用的样本个数，每次更新使用不同的样本会导致每次学习的准确性和学习时间不同。<br>批量梯度下降其缺点在于每次学习时间过长，并且如果训练集很大以至于需要消耗大量的内存，并且全量梯度下降不能进行在线模型参数更新。随机梯度下降最大的缺点在于每次更新可能并不会按照正确的方向进行，因此可以带来优化波动(扰动)，不过从另一个方面来看，随机梯度下降所带来的波动有个好处就是，对于类似盆地区域（即很多局部极小值点）那么这个波动的特点可能会使得优化的方向从当前的局部极小值点跳到另一个更好的局部极小值点，这样便可能对于非凸函数，最终收敛于一个较好的局部极值点，甚至全局极值点。相对于随机梯度下降，Mini-batch梯度下降降低了收敛波动性，即降低了参数更新的方差，使得更新更加稳定。相对于全量梯度下降，其提高了每次学习的速度。Dauphin指出更严重的问题不是局部极值点，而是鞍点。（目标函数在此点上的梯度（一阶导数）值为 0，但从该点出发的一个方向是函数的极大值点，而在另一个方向是函数的极小值点。）</p>
+<ul>
+<li>Momentum：要是当前时刻的梯度与历史时刻梯度方向相似，这种趋势在当前时刻则会加强；要是不同，则当前时刻的梯度方向减弱）</li>
+<li>Adagrad：也是一种基于梯度的优化算法，它能够对每个参数自适应不同的学习速率，对稀疏特征，得到大的学习更新，对非稀疏特征，得到较小的学习更新，因此该优化算法适合处理稀疏特征数据。在GloVe中便使用Adagrad来训练得到词向量(Word Embeddings), 频繁出现的单词赋予较小的更新，不经常出现的单词则赋予较大的更新。</li>
+<li>Adam：也是一种不同参数自适应不同学习速率方法，与Adadelta与RMSprop区别在于，它计算历史梯度衰减方式不同，不使用历史平方衰减，其衰减方式类似动量。</li>
+</ul>
+<p>总结：如果你的数据特征是稀疏的，那么你最好使用自适应学习速率SGD优化方法(Adagrad、Adadelta、RMSprop与Adam)，因为你不需要在迭代过程中对学习速率进行人工调整。</p>
+<h4 id="监督学习／迁移学习／半监督学习／弱监督学习／非监督学习？"><a href="#监督学习／迁移学习／半监督学习／弱监督学习／非监督学习？" class="headerlink" title="监督学习／迁移学习／半监督学习／弱监督学习／非监督学习？"></a>监督学习／迁移学习／半监督学习／弱监督学习／非监督学习？</h4><p>答: 监督学习，数据有label；迁移学习，迁移参数等，希望模型能够适应其他数据集；半监督学习，部分有标签部分没有；弱监督学习，部分无标签，标签粗粒度，错标签；非监督，无标签。<br>知识点：</p>
+<ul>
+<li>半监督学习：其训练数据的一部分是有标签的，另一部分没有标签，而没标签数据的数量常常极大于有标签数据数量（这也是符合现实情况的）。隐藏在半监督学习下的基本规律在于：数据的分布必然不是完全随机的，通过一些有标签数据的局部特征，以及更多没标签数据的整体分布，就可以得到可以接受甚至是非常好的分类结果。（可以说是弱监督的子集）</li>
+<li>无监督学习：AutoEncoding，PCA，RF，K-means，GAN等。</li>
+<li>强化学习：强化学习是一个多次决策的过程，可以形成一个决策链；监督学习只是一个一次决策的过程。</li>
+<li>迁移学习：迁移学习(Transfer learning) 顾名思义就是就是把已学训练好的模型参数迁移到新的模型来帮助新模型训练。考虑到大部分数据或任务是存在相关性的，所以通过迁移学习我们可以将已经学到的模型参数（也可理解为模型学到的知识）通过某种方式来分享给新模型从而加快并优化模型的学习效率不用像大多数网络那样从零学习。</li>
+<li>多任务学习：把多个相关（related）的任务（task）放在一起学习。多个任务之间共享一些因素，它们可以在学习过程中，共享它们所学到的信息。相关联的多任务学习比单任务学习能去的更好的泛化（generalization）效果。</li>
+<li>弱监督学习：弱监督通常分为三种类型。第一种是不完全监督，即只有训练数据集的一个（通常很小的）子集有标签，其它数据则没有标签。在很多任务中都存在这种情况。例如，在图像分类中，真值标签是人工标注的；从互联网上获得大量的图片很容易，然而由于人工标注的费用，只能标注其中一个小子集的图像。第二种是不确切监督，即只有粗粒度的标签。又以图像分类任务为例。我们希望图片中的每个物体都被标注；然而我们只有图片级的标签而没有物体级的标签。第三种是不准确监督，即给定的标签并不总是真值。出现这种情况的原因有，标注者粗心或疲倦，或者一些图像本身就难以分类。</li>
+</ul>
+<h4 id="Softmax-Loss？"><a href="#Softmax-Loss？" class="headerlink" title="Softmax Loss？"></a>Softmax Loss？</h4><p>答：Softmax Loss就是Softmax上正确的标签的概率的负对数，这样的话，Loss越小，表示模型效果也越好。而且softmax loss的求导特别方便，只需要将计算的概率向量对应真正结果的那一维减一就好了。具体推导可以看<a href="https://blog.csdn.net/u014380165/article/details/79632950" target="_blank" rel="noopener">卷积神经网络系列之softmax loss对输入的求导推导</a>，其实基本是简单的求导，学过高数的就可以求。为什么要取指数，第一个原因是要模拟max的行为，所以要让大的更大。第二个原因是需要一个可导的函数。<br>知识点：现在还是a和b，a&gt;b，如果我们取按照softmax来计算取a和b的概率，那a的softmax值大于b的，所以a会经常取到，而b也会偶尔取到，概率跟它们本来的大小有关。所以说不是max，而是softmax。根据公式:\(S_i=\frac{e^{V_i}}{\sum_j{e^{V_j}}}\)，也就是该元素的指数和所有元素的指数和的比值。交叉熵是\(J(\delta)=-\frac{1}{m}\sum_{i=1}^{m}y^{(i)}log(h_{\theta}(x^{(i)}))+(1-y^{(i)})log(1-h_{\theta}(x^{(i)}))\)，它的推导也主要是高数部分的推导，具体可以看<a href="https://blog.csdn.net/jasonzzj/article/details/52017438" target="_blank" rel="noopener">交叉熵代价函数(损失函数)及其求导推导</a></p>
+<h4 id="CNN最成功的应用是在CV，那为什么NLP和Speech的很多问题也可以用CNN解出来？为什么AlphaGo里也用了CNN？这几个不相关的问题的相似性在哪里？CNN通过什么手段抓住了这个共性？"><a href="#CNN最成功的应用是在CV，那为什么NLP和Speech的很多问题也可以用CNN解出来？为什么AlphaGo里也用了CNN？这几个不相关的问题的相似性在哪里？CNN通过什么手段抓住了这个共性？" class="headerlink" title="CNN最成功的应用是在CV，那为什么NLP和Speech的很多问题也可以用CNN解出来？为什么AlphaGo里也用了CNN？这几个不相关的问题的相似性在哪里？CNN通过什么手段抓住了这个共性？"></a>CNN最成功的应用是在CV，那为什么NLP和Speech的很多问题也可以用CNN解出来？为什么AlphaGo里也用了CNN？这几个不相关的问题的相似性在哪里？CNN通过什么手段抓住了这个共性？</h4><p>答：以上几个不相关问题的相关性在于，都存在局部与整体的关系，由低层次的特征经过组合，组成高层次的特征，并且得到不同特征之间的空间相关性。CNN抓住此共性的手段主要有四个：局部连接／权值共享／池化操作／多层次结构。局部连接使网络可以提取数据的局部特征；权值共享大大降低了网络的训练难度，一个Filter只提取一个特征，在整个图片（或者语音／文本） 中进行卷积；池化操作与多层次结构一起，实现了数据的降维，将低层次的局部特征组合成为较高层次的特征，从而对整个图片进行表示。如果每一个点的处理使用相同的Filter，则为全卷积，如果使用不同的Filter，则为Local-Conv。DeepFace在做人脸检测的时候先进行了两次全卷积＋一次池化，提取了低层次的边缘／纹理等特征。后接了3个Local-Conv层，这里是用Local-Conv的原因是，人脸在不同的区域存在不同的特征（眼睛／鼻子／嘴的分布位置相对固定），当不存在全局的局部特征分布时，Local-Conv更适合特征的提取。</p>
+<h4 id="什么样的资料集不适合用深度学习"><a href="#什么样的资料集不适合用深度学习" class="headerlink" title="什么样的资料集不适合用深度学习?"></a>什么样的资料集不适合用深度学习?</h4><p>答：数据集太小，数据样本不足时，深度学习相对其它机器学习算法，没有明显优势。<br>数据集没有局部相关特性，目前深度学习表现比较好的领域主要是图像／语音／自然语言处理等领域，这些领域的一个共性是局部相关性。图像中像素组成物体，语音信号中音位组合成单词，文本数据中单词组合成句子，这些特征元素的组合一旦被打乱，表示的含义同时也被改变。对于没有这样的局部相关性的数据集，不适于使用深度学习算法进行处理。举个例子：预测一个人的健康状况，相关的参数会有年龄、职业、收入、家庭状况等各种元素，将这些元素打乱，并不会影响相关的结果。</p>
+<h4 id="对所有优化问题来说-有没有可能找到比現在已知算法更好的算法"><a href="#对所有优化问题来说-有没有可能找到比現在已知算法更好的算法" class="headerlink" title="对所有优化问题来说, 有没有可能找到比現在已知算法更好的算法"></a>对所有优化问题来说, 有没有可能找到比現在已知算法更好的算法</h4><p>答：优化算法时，针对具体问题进行分析，是算法优化的核心所在。没有免费午餐原理。</p>
+<h4 id="用贝叶斯机率说明Dropout的原理"><a href="#用贝叶斯机率说明Dropout的原理" class="headerlink" title="用贝叶斯机率说明Dropout的原理"></a>用贝叶斯机率说明Dropout的原理</h4><p>答：回想一下使用Bagging学习,我们定义k个不同的模型,从训练集有替换采样构造k个不同的数据集,然后在训练集上训练模型。Dropout的目标是在指数级数量的神经网络上近似这个过程。Dropout训练与Bagging训练不太一样。在Bagging的情况下,所有模型是独立的。在Dropout的情况下,模型是共享参数的,其中每个模型继承的父神经网络参数的不同子集。参数共享使得在有限可用的内存下代表指数数量的模型变得可能。在Bagging的情况下,每一个模型在其相应训练集上训练到收敛。在Dropout的情况下,通常大部分模型都没有显式地被训练,通常该模型很大,以致到宇宙毁灭都不能采样所有可能的子网络。取而代之的是,可能的子网络的一小部分训练单个步骤,参数共享导致剩余的子网络能有好的参数设定。<br>知识点：Dropout为什么会起作用。</p>
+<ul>
+<li>由于每次用输入网络的样本进行权值更新时，隐含节点都是以一定概率随机出现，因此不能保证每2个隐含节点每次都同时出现，这样权值的更新不再依赖于有固定关系隐含节点的共同作用，阻止了某些特征仅仅在其它特定特征下才有效果的情况。</li>
+<li>可以将dropout看作是模型平均的一种。对于每次输入到网络中的样本（可能是一个样本，也可能是一个batch的样本），其对应的网络结构都是不同的，但所有的这些不同的网络结构又同时share隐含节点的权值。这样不同的样本就对应不同的模型，是bagging的一种极端情况。个人感觉这个解释稍微靠谱些，和bagging，boosting理论有点像，但又不完全相同。</li>
+<li>native bayes是dropout的一个特例。Native bayes有个错误的前提，即假设各个特征之间相互独立，这样在训练样本比较少的情况下，单独对每个特征进行学习，测试时将所有的特征都相乘，且在实际应用时效果还不错。而Droput每次不是训练一个特征，而是一部分隐含层特征。</li>
+<li>还有一个比较有意思的解释是，Dropout类似于性别在生物进化中的角色，物种为了使适应不断变化的环境，性别的出现有效的阻止了过拟合，即避免环境改变时物种可能面临的灭亡。</li>
+</ul>
+<h4 id="何为共线性-跟过拟合有啥关联"><a href="#何为共线性-跟过拟合有啥关联" class="headerlink" title="何为共线性, 跟过拟合有啥关联?"></a>何为共线性, 跟过拟合有啥关联?</h4><p>答：共线性：多变量线性回归中，变量之间由于存在高度相关关系而使回归估计不准确。共线性会造成冗余，导致过拟合。解决方法：排除变量的相关性／加入权重正则。</p>
+<h4 id="广义线性模型是怎被应用在深度学习中"><a href="#广义线性模型是怎被应用在深度学习中" class="headerlink" title="广义线性模型是怎被应用在深度学习中?"></a>广义线性模型是怎被应用在深度学习中?</h4><p>答：深度学习从统计学角度，可以看做递归的广义线性模型。广义线性模型相对于经典的线性模型(y=wx+b)，核心在于引入了连接函数g(.)，形式变为：y=g−1(wx+b)。</p>
+<h4 id="什麽造成梯度消失问题-推导一下"><a href="#什麽造成梯度消失问题-推导一下" class="headerlink" title="什麽造成梯度消失问题? 推导一下"></a>什麽造成梯度消失问题? 推导一下</h4><p>答：神经网络的训练中，通过改变神经元的权重，使网络的输出值尽可能逼近标签以降低误差值，训练普遍使用BP算法，核心思想是，计算出输出与标签间的损失函数值，然后计算其相对于每个神经元的梯度，进行权值的迭代。梯度消失会造成权值更新缓慢，模型训练难度增加。造成梯度消失的一个原因是，许多激活函数将输出值挤压在很小的区间内，在激活函数两端较大范围的定义域内梯度为0。造成学习停止。</p>
+<h4 id="Weights-Initialization-不同的方式，造成的后果。为什么会造成这样的结果？"><a href="#Weights-Initialization-不同的方式，造成的后果。为什么会造成这样的结果？" class="headerlink" title="Weights Initialization. 不同的方式，造成的后果。为什么会造成这样的结果？"></a>Weights Initialization. 不同的方式，造成的后果。为什么会造成这样的结果？</h4><p>答：几种主要的权值初始化方法：lecun_uniform /  glorot_normal / he_normal / batch_normal，主要是scale的地方不同。具体的可以看链接：<a href="https://keras-cn.readthedocs.io/en/latest/other/initializations/" target="_blank" rel="noopener">keras文档</a></p>
+<h4 id="为什么网络够深-Neurons-足够多-的时候，总是可以避开较差Local-Optima"><a href="#为什么网络够深-Neurons-足够多-的时候，总是可以避开较差Local-Optima" class="headerlink" title="为什么网络够深(Neurons 足够多)的时候，总是可以避开较差Local Optima?"></a>为什么网络够深(Neurons 足够多)的时候，总是可以避开较差Local Optima?</h4><p>答：The training and testing error become increasingly decorrelated as the network size increases. This provides further indication that attempting to find the absolute possible minimum is of limited use with regards to generalization performance. Critical points of large networks exhibit the layered structure where high-quality low-index critical points lie close to the global minimum. 我的理解，网络层数越多，它能探索到的范围就越大，它的极值点就越靠近全局最优点。</p>
+<h4 id="Loss-有哪些定义方式（基于什么？），-有哪些优化方式，怎么优化，各自的好处，以及解释？"><a href="#Loss-有哪些定义方式（基于什么？），-有哪些优化方式，怎么优化，各自的好处，以及解释？" class="headerlink" title="Loss. 有哪些定义方式（基于什么？）， 有哪些优化方式，怎么优化，各自的好处，以及解释？"></a>Loss. 有哪些定义方式（基于什么？）， 有哪些优化方式，怎么优化，各自的好处，以及解释？</h4><p>答：Cross-Entropy / MSE / K-L散度(相对熵)。前面两个挺简单的，说一下KL散度<br>知识点:\(D(p||q)=\sum_{i=1}^{n}p(x)\log{\frac{p(x)}{q(x)}}\)。MSE的不好的地方：1. 其偏导值在输出概率值接近0或者接近1的时候非常小，这可能会造成模型刚开始训练时，偏导值几乎消失。2. 通过Softmax输出的曲线是波动的，有很多局部的极值点。 即，非凸优化问题 (non-convex)</p>
+<h4 id="Dropout？如何理解"><a href="#Dropout？如何理解" class="headerlink" title="Dropout？如何理解"></a>Dropout？如何理解</h4><p>答：你可以把它理解成一个多模型的ensemble，随机关闭了一些神经元，相当于多个网络的合并，因此效果会提升。在dropout之后，需要对神经元进行release，乘以1/(1-p)，从而达到恢复原来的激活值点的程度。</p>
+<h4 id="Activation-Function"><a href="#Activation-Function" class="headerlink" title="Activation Function"></a>Activation Function</h4><p>答：1.Step. 阶跃函数，无法应用于BP神经网络，因为导数为0，无法回传。2.Identity. 线性函数，当存在非线性，就无法使用。3.ReLU. 简单高效，小于0无导数。4.Sigmoid，Tanh函数，logistic regression里经常用，容易计算。但是只在接近0的时候导数比较大。5.Leaky ReLU. 小于0的部分不为0，允许梯度学习。6.PReLU，小于0的斜率是在学习的时候学习到的。参考<a href="https://www.jiqizhixin.com/articles/2017-10-10-3" target="_blank" rel="noopener">26种神经网络激活函数可视化</a></p>
+<h4 id="怎么降低过拟合？"><a href="#怎么降低过拟合？" class="headerlink" title="怎么降低过拟合？"></a>怎么降低过拟合？</h4><p>答：引入正则化（L1，L2），Dropout，提前终止训练（Cross Validation），增加样本量</p>
+<h4 id="BatchNormalization"><a href="#BatchNormalization" class="headerlink" title="BatchNormalization"></a>BatchNormalization</h4><p>先来思考一个问题：我们知道在神经网络训练开始前，都要对输入数据做一个归一化处理，那么具体为什么需要归一化呢？归一化后有什么好处呢？原因在于神经网络学习过程本质就是为了学习数据分布，一旦训练数据与测试数据的分布不同，那么网络的泛化能力也大大降低；另外一方面，一旦每批训练数据的分布各不相同(batch 梯度下降)，那么网络就要在每次迭代都去学习适应不同的分布，这样将会大大降低网络的训练速度，这也正是为什么我们需要对数据都要做一个归一化预处理的原因。<br>对于深度网络的训练是一个复杂的过程，只要网络的前面几层发生微小的改变，那么后面几层就会被累积放大下去。一旦网络某一层的输入数据的分布发生改变，那么这一层网络就需要去适应学习这个新的数据分布，所以如果训练过程中，训练数据的分布一直在发生变化，那么将会影响网络的训练速度。<br>我们知道网络一旦train起来，那么参数就要发生更新，除了输入层的数据外(因为输入层数据，我们已经人为的为每个样本归一化)，后面网络每一层的输入数据分布是一直在发生变化的，因为在训练的时候，前面层训练参数的更新将导致后面层输入数据分布的变化。以网络第二层为例：网络的第二层输入，是由第一层的参数和input计算得到的，而第一层的参数在整个训练过程中一直在变化，因此必然会引起后面每一层输入数据分布的改变。我们把网络中间层在训练过程中，数据分布的改变称之为：“Internal  Covariate Shift”。Paper所提出的算法，就是要解决在训练过程中，中间层数据分布发生改变的情况，于是就有了Batch  Normalization.<br>在每次mini-batch反向传播之后重新对参数进行0均值1方差标准化。这样可以使用更大的学习速率，以及花费更少的精力在参数初始化点上。Batch normalization充当着正则化、减少甚至消除掉Dropout的必要性。</p>
+<h4 id="Gradient-noise"><a href="#Gradient-noise" class="headerlink" title="Gradient noise"></a>Gradient noise</h4><p>即在每次迭代计算梯度中加上一个高斯分布N(0,σ2t)的随机误差。对梯度增加随机误差会增加模型的鲁棒性，即使初始参数值选择地不好，并适合对特别深层次的负责的网络进行训练。其原因在于增加随机噪声会有更多的可能性跳过局部极值点并去寻找一个更好的局部极值点，这种可能性在深层次的网络中更常见。</p>
+<h4 id="奇异值-SVD-分解"><a href="#奇异值-SVD-分解" class="headerlink" title="奇异值(SVD)分解"></a>奇异值(SVD)分解</h4><p>矩阵的奇异值是一个数学意义上的概念，一般是由奇异值分解（Singular Value Decomposition，简称SVD分解）得到。如果要问奇异值表示什么物理意义，那么就必须考虑在不同的实际工程应用中奇异值所对应的含义。奇异值往往对应着矩阵中隐含的重要信息，且重要性和奇异值大小正相关。每个矩阵A都可以表示为一系列秩为1的“小矩阵”之和，而奇异值则衡量了这些“小矩阵”对于A的权重。<br>在图像处理领域，奇异值不仅可以应用在数据压缩上，还可以对图像去噪。如果一副图像包含噪声，我们有理由相信那些较小的奇异值就是由于噪声引起的。当我们强行令这些较小的奇异值为0时，就可以去除图片中的噪声。<br>也可以用在推荐系统里，用协同过滤的算法。</p>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ol>
+<li><a href="https://zhuanlan.zhihu.com/p/25005808" target="_blank" rel="noopener">深度学习岗位面试问题整理笔记</a></li>
+<li><a href="https://www.zhihu.com/question/54308150" target="_blank" rel="noopener">深度学习相关的职位面试时一般会问什么？会问一些传统的机器学习算法吗？</a></li>
+<li><a href="https://blog.csdn.net/hjimce/article/details/50866313" target="_blank" rel="noopener">Batch Normalization 学习笔记</a></li>
+<li><a href="https://arxiv.org/pdf/1502.03167.pdf" target="_blank" rel="noopener">Batch Normalization: Accelerating Deep Network Training by  Reducing Internal Covariate Shift</a></li>
+<li><a href="https://www.zhihu.com/question/22237507" target="_blank" rel="noopener">奇异值的物理意义是什么？</a></li>
+<li><a href="https://yanyiwu.com/work/2012/09/10/SVD-application-in-recsys.html" target="_blank" rel="noopener">SVD在推荐系统中的应用</a></li>
+</ol>
+<h4 id="其他建议"><a href="#其他建议" class="headerlink" title="其他建议"></a>其他建议</h4><ol>
+<li>动态规划、贪心、树、链表都是常考题。可以在leetcode上刷题，至少100道左右，基本就能应对面试中的算法coding了。把答案用一个函数的形式写出来。</li>
+<li>面试中遇到的机器学习算法主要有线性回归、朴素贝叶斯、决策树、GDBT、随机森林、Adaboost、逻辑回归（和Softmax）、SVM、神经网络和卷积神经网络，写逻辑回归的极大似然估计的推导，SVM会问思想，神经网络会问随机梯度下降和反向传播。损失函数、过拟合、算法的优缺点是经常问到的点。机器学习算法中哪些是回归算法哪些是分类的。</li>
+<li>传统机器学习方面问题。lr，svm，gmm，kmeans，HMM，NB，Decision Tree，Information Gain，Gini Index，ensemble model（bagging，stacking，boosting，结合RF，Adaboost，GBDT），Feature Selection，PCA，LDA，bias vs variance</li>
+<li>深度学习方面问题。手推BP，梯度消失/爆炸原因，解决方法，Loss Function，BN原理，防止过拟合方法，SGD，momentum，RMSProp，Adam，牛顿法，拉格朗日乘子法，对偶问题，KKT条件。</li>
+<li>Coding题型：排序、双指针、dp、贪心、分治、递归、回溯、字符串、树、链表、trie、bfs、dfs等等</li>
+</ol>
+<p>###TBD</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    <div align="center">
+  
+    <div class="copyright">
+    <p><span>
+    <b>本文地址：</b><a href="/2018/05/28/深度学习面试笔记/" title="深度学习面试笔记">http://lindongding.com/2018/05/28/深度学习面试笔记/</a><br/><b>转载请注明出处，谢谢！</b>
+    </span></p>
+    </div>
+    
+  
+</div>
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Notebook/" rel="tag"># Notebook</a>
+          
+            <a href="/tags/Interview/" rel="tag"># Interview</a>
+          
+            <a href="/tags/DeepLearning/" rel="tag"># DeepLearning</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/18/Siamese-LSTM-Network/" rel="next" title="Siamese LSTM Network">
+                <i class="fa fa-chevron-left"></i> Siamese LSTM Network
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="LinDongDing" />
+            
+              <p class="site-author-name" itemprop="name">LinDongDing</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/Categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/Tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lindongding" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/DongDingLin/activities" target="_blank" title="ZhiHu">
+                      
+                        <i class="fa fa-fw fa-h-square"></i>ZhiHu</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:674177769@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#SGD中S（Stochastic）代表什么"><span class="nav-number">1.</span> <span class="nav-text">SGD中S（Stochastic）代表什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#监督学习／迁移学习／半监督学习／弱监督学习／非监督学习？"><span class="nav-number">2.</span> <span class="nav-text">监督学习／迁移学习／半监督学习／弱监督学习／非监督学习？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Softmax-Loss？"><span class="nav-number">3.</span> <span class="nav-text">Softmax Loss？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CNN最成功的应用是在CV，那为什么NLP和Speech的很多问题也可以用CNN解出来？为什么AlphaGo里也用了CNN？这几个不相关的问题的相似性在哪里？CNN通过什么手段抓住了这个共性？"><span class="nav-number">4.</span> <span class="nav-text">CNN最成功的应用是在CV，那为什么NLP和Speech的很多问题也可以用CNN解出来？为什么AlphaGo里也用了CNN？这几个不相关的问题的相似性在哪里？CNN通过什么手段抓住了这个共性？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么样的资料集不适合用深度学习"><span class="nav-number">5.</span> <span class="nav-text">什么样的资料集不适合用深度学习?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对所有优化问题来说-有没有可能找到比現在已知算法更好的算法"><span class="nav-number">6.</span> <span class="nav-text">对所有优化问题来说, 有没有可能找到比現在已知算法更好的算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用贝叶斯机率说明Dropout的原理"><span class="nav-number">7.</span> <span class="nav-text">用贝叶斯机率说明Dropout的原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#何为共线性-跟过拟合有啥关联"><span class="nav-number">8.</span> <span class="nav-text">何为共线性, 跟过拟合有啥关联?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#广义线性模型是怎被应用在深度学习中"><span class="nav-number">9.</span> <span class="nav-text">广义线性模型是怎被应用在深度学习中?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什麽造成梯度消失问题-推导一下"><span class="nav-number">10.</span> <span class="nav-text">什麽造成梯度消失问题? 推导一下</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Weights-Initialization-不同的方式，造成的后果。为什么会造成这样的结果？"><span class="nav-number">11.</span> <span class="nav-text">Weights Initialization. 不同的方式，造成的后果。为什么会造成这样的结果？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么网络够深-Neurons-足够多-的时候，总是可以避开较差Local-Optima"><span class="nav-number">12.</span> <span class="nav-text">为什么网络够深(Neurons 足够多)的时候，总是可以避开较差Local Optima?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Loss-有哪些定义方式（基于什么？），-有哪些优化方式，怎么优化，各自的好处，以及解释？"><span class="nav-number">13.</span> <span class="nav-text">Loss. 有哪些定义方式（基于什么？）， 有哪些优化方式，怎么优化，各自的好处，以及解释？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dropout？如何理解"><span class="nav-number">14.</span> <span class="nav-text">Dropout？如何理解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Activation-Function"><span class="nav-number">15.</span> <span class="nav-text">Activation Function</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#怎么降低过拟合？"><span class="nav-number">16.</span> <span class="nav-text">怎么降低过拟合？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BatchNormalization"><span class="nav-number">17.</span> <span class="nav-text">BatchNormalization</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Gradient-noise"><span class="nav-number">18.</span> <span class="nav-text">Gradient noise</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#奇异值-SVD-分解"><span class="nav-number">19.</span> <span class="nav-text">奇异值(SVD)分解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Reference"><span class="nav-number">20.</span> <span class="nav-text">Reference</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他建议"><span class="nav-number">21.</span> <span class="nav-text">其他建议</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-blind"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LinDongDing</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">20.8k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("oxteuY8LDedJY2ovUQtMf0Pr-gzGzoHsz", "QTPcgUuAOg5Ap5PmuoVm3uCj");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  
+
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"left","width":80,"height":160},"mobile":{"show":true}});</script></body>
+</html>
