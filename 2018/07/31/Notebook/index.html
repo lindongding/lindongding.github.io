@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="Samuel&#39;s Blog">
 <meta property="og:description" content="这是在看paper中遇到的问题的探索，思考和总结。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-07-31T06:15:10.406Z">
+<meta property="og:updated_time" content="2018-08-01T12:23:32.139Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Notebook">
 <meta name="twitter:description" content="这是在看paper中遇到的问题的探索，思考和总结。">
@@ -366,7 +366,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  19
+                  302
                 </span>
               
 
@@ -404,6 +404,8 @@
 
       
         <p>这是在看paper中遇到的问题的探索，思考和总结。<br><a id="more"></a></p>
+<h3 id="自回归模型"><a href="#自回归模型" class="headerlink" title="自回归模型"></a>自回归模型</h3><p>自回归模型是统计上一种处理时间序列的方法，用同一变数例如x的之前各期，亦即x1至xt-1来预测本期xt的表现，并假设它们为一线性关系。因为这是从回归分析中的线性回归发展而来，只是不用x预测y，而是x预测x，所以叫自回归。</p>
+<h4 id="优点与限制"><a href="#优点与限制" class="headerlink" title="优点与限制"></a>优点与限制</h4><p>自回归方法的优点是所需资料不多，可用自身变数数列来进行预测。但是这种方法受到一定的限制：<br>必须具有自相关，自相关系数是关键。如果自相关系数(R)小于0.5，则不宜采用，否则预测结果极不准确。<br>自回归只能适用于预测与自身前期相关的经济现象，即受自身历史因素影响较大的经济现象，如矿的开采量，各种自然资源产量等；对于受社会因素影响较大的经济现象，不宜采用自回归，而应改采可纳入其他变数的向量自回归模型。</p>
 
       
     </div>
@@ -507,8 +509,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -595,6 +606,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#自回归模型"><span class="nav-number">1.</span> <span class="nav-text">自回归模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点与限制"><span class="nav-number">1.1.</span> <span class="nav-text">优点与限制</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -622,7 +649,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">20.9k</span>
+    <span title="Site words total count">21.1k</span>
   
 </div>
 
