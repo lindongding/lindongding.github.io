@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Notebook,XGBoost,Interview,Engineering," />
+  <meta name="keywords" content="notebook,research," />
 
 
 
@@ -86,20 +86,18 @@
 
 
 
-<meta name="description" content="Last week, I writed a note about XGBoost. Today, I show you LGBM, which is more convenient and faster than XGBoost. If XGBoost brings us a rocket gun, LGBM brings us a multi-rocket guns. (English vers">
-<meta name="keywords" content="Notebook,XGBoost,Interview,Engineering">
+<meta name="description" content="这是在看paper中遇到的问题的探索，思考和总结。">
+<meta name="keywords" content="notebook,research">
 <meta property="og:type" content="article">
-<meta property="og:title" content="LightGBM: From Rocket Gun to Multi-Rocket Guns">
-<meta property="og:url" content="http://lindongding.com/2018/04/25/LightGBM-From-Rocket-Gun-to-Multi-Rocket-Guns/index.html">
+<meta property="og:title" content="Notebook">
+<meta property="og:url" content="http://lindongding.com/2018/07/31/Notebook/index.html">
 <meta property="og:site_name" content="Samuel&#39;s Blog">
-<meta property="og:description" content="Last week, I writed a note about XGBoost. Today, I show you LGBM, which is more convenient and faster than XGBoost. If XGBoost brings us a rocket gun, LGBM brings us a multi-rocket guns. (English vers">
+<meta property="og:description" content="这是在看paper中遇到的问题的探索，思考和总结。">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://lindongding.com/2018/04/25/LightGBM-From-Rocket-Gun-to-Multi-Rocket-Guns/histogram-wiki.png">
-<meta property="og:updated_time" content="2018-05-01T17:40:08.381Z">
+<meta property="og:updated_time" content="2018-07-31T06:15:10.406Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="LightGBM: From Rocket Gun to Multi-Rocket Guns">
-<meta name="twitter:description" content="Last week, I writed a note about XGBoost. Today, I show you LGBM, which is more convenient and faster than XGBoost. If XGBoost brings us a rocket gun, LGBM brings us a multi-rocket guns. (English vers">
-<meta name="twitter:image" content="http://lindongding.com/2018/04/25/LightGBM-From-Rocket-Gun-to-Multi-Rocket-Guns/histogram-wiki.png">
+<meta name="twitter:title" content="Notebook">
+<meta name="twitter:description" content="这是在看paper中遇到的问题的探索，思考和总结。">
 
 
 
@@ -129,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://lindongding.com/2018/04/25/LightGBM-From-Rocket-Gun-to-Multi-Rocket-Guns/"/>
+  <link rel="canonical" href="http://lindongding.com/2018/07/31/Notebook/"/>
 
 
 
 
 
-  <title>LightGBM: From Rocket Gun to Multi-Rocket Guns | Samuel's Blog</title>
+  <title>Notebook | Samuel's Blog</title>
   
 
 
@@ -274,7 +272,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://lindongding.com/2018/04/25/LightGBM-From-Rocket-Gun-to-Multi-Rocket-Guns/">
+    <link itemprop="mainEntityOfPage" href="http://lindongding.com/2018/07/31/Notebook/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LinDongDing">
@@ -291,7 +289,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">LightGBM: From Rocket Gun to Multi-Rocket Guns</h2>
+          <h2 class="post-title" itemprop="name headline">Notebook</h2>
         
 
         <div class="post-meta">
@@ -303,8 +301,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-25T21:45:47+08:00">
-                2018-04-25
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-31T14:13:19+08:00">
+                2018-07-31
               </time>
             
 
@@ -343,7 +341,7 @@
 
           
           
-             <span id="/2018/04/25/LightGBM-From-Rocket-Gun-to-Multi-Rocket-Guns/" class="leancloud_visitors" data-flag-title="LightGBM: From Rocket Gun to Multi-Rocket Guns">
+             <span id="/2018/07/31/Notebook/" class="leancloud_visitors" data-flag-title="Notebook">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -368,7 +366,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  636
+                  19
                 </span>
               
 
@@ -384,7 +382,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  4
+                  1
                 </span>
               
             </div>
@@ -405,24 +403,7 @@
       
 
       
-        <p>Last week, I writed a note about XGBoost. Today, I show you LGBM, which is more convenient and faster than XGBoost. If XGBoost brings us a rocket gun, LGBM brings us a multi-rocket guns. (English version. Maybe there are many Syntax errors. 0.0)<br><a id="more"></a></p>
-<h4 id="Part-1-Origin"><a href="#Part-1-Origin" class="headerlink" title="Part 1 Origin"></a>Part 1 Origin</h4><p>We know GBDT models are so powerful that it can handle lots of data science competitions, but it also has a big problem: <strong>Huge Memory Requirement</strong>. In other words, it consumes lots of memory while running. Of course, you could split dataset into several parts and store in disk, and feed to the model step by step. But it’s a bad method because of disk’s speed. It’s too slow. Thanks to Microsoft DMTK group, We have LightGBM(Light Gradient Boosting Machine).</p>
-<h4 id="Part-II-Histogram-Algorithm"><a href="#Part-II-Histogram-Algorithm" class="headerlink" title="Part II Histogram Algorithm"></a>Part II Histogram Algorithm</h4><p>Histogram algorithm is one of LightGBM’s accelerated methods. Actually, histogram is a statistical algorithm. It calculates kinds of categories in one feature and store into bins. Like <strong>Figure 1: Histogram.</strong> LightGBM uses bins to store histogram, every bin has a range of data.</p>
-<p><div align="center"><img src="/2018/04/25/LightGBM-From-Rocket-Gun-to-Multi-Rocket-Guns/histogram-wiki.png" alt="Histogram" title="Histogram"></div><br>Compared to Pre-sorted Algorithm, histogram only need 1/8 of memory that pre-sorted need(If use 256 bins) and need less time(sort with bins and leaf histogram can be obtained by the histogram of its father node and brother’s node). View <a href="https://www.zhihu.com/question/51644470" target="_blank" rel="noopener">Zhihu LightGBM</a> for detailed information.<br>Of course, the histogram algorithm also has shortcomings. With bins, it couldn’t find exact segmentation point, which makes the training error not good as pre-sorted algorithm. However, from the experimental results, the difference between them isn’t big, even better. In fact, decision tree isn’t sensitive to the accuracy of the segmentation points. We could regard coarse segmentation points as the regularization item of the LGBM model.</p>
-<h4 id="Part-III-Leaf-wise-VS-Level-wise"><a href="#Part-III-Leaf-wise-VS-Level-wise" class="headerlink" title="Part III Leaf-wise VS Level-wise"></a>Part III Leaf-wise VS Level-wise</h4><p>As we know, decision tree has two strategies to grow itself: level-wise and leaf-wise. Mostly GBDT tools use the former. Level-wise could split the same layer of leaves at one time, which is easy for multithreading. But, in fact, level-wise is an inefficient algorithm because it doesn’t discriminate the same layer of leaves, which brings lots of unnecessary expenses.(Many leaves have low division gain.) Leaf-wise is a more efficient strategy to find a leaf with maximum split gain from all leaves(always the maximum #data), and then split. Therefore, compared with level-wise, leaf-wise can reduce more errors and achieve better accuracy with the same split times. The drawback of leaf-wise is that a deeper decision tree may result in over-fitting. Therefore, LightGBM adds a maximum depth limit which avoid over fitting.</p>
-<h4 id="Part-IV-Categorical-Feature-Free"><a href="#Part-IV-Categorical-Feature-Free" class="headerlink" title="Part IV Categorical-Feature-Free"></a>Part IV Categorical-Feature-Free</h4><p>Most machine learning tools don’t support categorical features as input. Generally we have to convert them into one-hot feature matrices, which bring additional consumption of computing and memory. LightGBM adds decision rules for categorical features. The main idea is that one category is regarded directly as one class, and the other category is considered as another. This is actually the same as the effect of the one-hot matrix.</p>
-<h4 id="Part-V-Conclusion"><a href="#Part-V-Conclusion" class="headerlink" title="Part V Conclusion"></a>Part V Conclusion</h4><p>LightGBM has three optimization designs.</p>
-<ol>
-<li>Decision tree algorithm based on Histogram.</li>
-<li>Leaf-wise with max depth limit</li>
-<li>Support Categorical features</li>
-<li>Histogram Acceleration</li>
-<li>Cache hit rate optimization(With bins, pre-sorted has different #data)</li>
-<li>Multithreaded optimization based on histogram.</li>
-</ol>
-<p>For my data science competition, basic LightGBM without parameter-adjusted has pretty result.</p>
-<p>And….特么用英文写实在是太累了…</p>
-<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><p><a href="https://medium.com/@pushkarmandot/https-medium-com-pushkarmandot-what-is-lightgbm-how-to-implement-it-how-to-fine-tune-the-parameters-60347819b7fc" target="_blank" rel="noopener">What is LightGBM, How to implement it? How to fine tune the parameters?</a><br><a href="https://www.zhihu.com/question/51644470" target="_blank" rel="noopener">如何看待微软新开源的LightGBM?</a><br><a href="https://en.wikipedia.org/wiki/Histogram" target="_blank" rel="noopener">Histogram-Wiki</a><br><a href="https://www.msra.cn/zh-cn/news/features/lightgbm-20170105" target="_blank" rel="noopener">开源 | LightGBM：三天内收获GitHub 1000  星</a></p>
+        <p>这是在看paper中遇到的问题的探索，思考和总结。<br><a id="more"></a></p>
 
       
     </div>
@@ -436,7 +417,7 @@
   
     <div class="copyright">
     <p><span>
-    <b>本文地址：</b><a href="/2018/04/25/LightGBM-From-Rocket-Gun-to-Multi-Rocket-Guns/" title="LightGBM: From Rocket Gun to Multi-Rocket Guns">http://lindongding.com/2018/04/25/LightGBM-From-Rocket-Gun-to-Multi-Rocket-Guns/</a><br/><b>转载请注明出处，谢谢！</b>
+    <b>本文地址：</b><a href="/2018/07/31/Notebook/" title="Notebook">http://lindongding.com/2018/07/31/Notebook/</a><br/><b>转载请注明出处，谢谢！</b>
     </span></p>
     </div>
     
@@ -449,13 +430,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Notebook/" rel="tag"># Notebook</a>
+            <a href="/tags/notebook/" rel="tag"># notebook</a>
           
-            <a href="/tags/XGBoost/" rel="tag"># XGBoost</a>
-          
-            <a href="/tags/Interview/" rel="tag"># Interview</a>
-          
-            <a href="/tags/Engineering/" rel="tag"># Engineering</a>
+            <a href="/tags/research/" rel="tag"># research</a>
           
         </div>
       
@@ -468,8 +445,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/24/从砍刀到火箭炮：XGBoost带你装逼带你飞/" rel="next" title="从砍刀到火箭炮：XGBoost带你装逼带你飞">
-                <i class="fa fa-chevron-left"></i> 从砍刀到火箭炮：XGBoost带你装逼带你飞
+              <a href="/2018/05/28/深度学习面试笔记/" rel="next" title="深度学习面试笔记">
+                <i class="fa fa-chevron-left"></i> 深度学习面试笔记
               </a>
             
           </div>
@@ -477,10 +454,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/28/Stacking-Ensemble-your-Models/" rel="prev" title="Stacking: Ensemble your Models">
-                Stacking: Ensemble your Models <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -534,17 +507,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -630,22 +594,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-1-Origin"><span class="nav-number">1.</span> <span class="nav-text">Part 1 Origin</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-II-Histogram-Algorithm"><span class="nav-number">2.</span> <span class="nav-text">Part II Histogram Algorithm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-III-Leaf-wise-VS-Level-wise"><span class="nav-number">3.</span> <span class="nav-text">Part III Leaf-wise VS Level-wise</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-IV-Categorical-Feature-Free"><span class="nav-number">4.</span> <span class="nav-text">Part IV Categorical-Feature-Free</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Part-V-Conclusion"><span class="nav-number">5.</span> <span class="nav-text">Part V Conclusion</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Reference"><span class="nav-number">6.</span> <span class="nav-text">Reference</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -967,26 +915,6 @@
   
 
   
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
   
 
 
